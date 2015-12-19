@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/_scripts/RootController.cs">
+    <Files>
+      <File FileName="Assets/_scripts/PlayerManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/_scripts/SeasonController.cs" Line="1" Column="1" />
+      <File FileName="Assets/_scripts/TreeManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/_scripts/RootController.cs" Line="40" Column="3" />
+      <File FileName="Assets/_scripts/SelectionController.cs" Line="1" Column="1" />
+      <File FileName="Assets/_scripts/TreeTile.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{75BEDE5A-0575-E4AF-9321-ED598CB7B564}") = "SimTree", "Assembly-CSharp.csproj", "{66165768-966F-4EC2-F565-3CE3E7BC1C4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66165768-966F-4EC2-F565-3CE3E7BC1C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66165768-966F-4EC2-F565-3CE3E7BC1C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66165768-966F-4EC2-F565-3CE3E7BC1C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66165768-966F-4EC2-F565-3CE3E7BC1C4E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
