@@ -14,10 +14,20 @@ public class TreeTile : HexTile {
 	public Sprite sprite6;
 	public Sprite sprite8;
 	public Sprite sprite9;
-	public string weather;
+	public string weather = "Inactive";
+	public string season = "Spring";
 	public MeshRenderer tileRenderer;
 
-	public void UpdateTile(int newType, Vector3 newPos, bool[] newDirections, bool changeSprite){
+	void OnMouseDown(){
+		if(weather != "Inactive")
+			PlayerManager.Instance.informationPanel.GetComponent<InformationPanelController>().InfoPanelOn(transform.position, season, weather);
+	}
+
+	void OnMouseExit(){
+		PlayerManager.Instance.informationPanel.SetActive (false);
+	}
+
+	public void UpdateTile(int newType, Vector3 newPos, bool[] newDirections, bool changeSprite, bool changeSeason){
 		ChangeMaterial (newType);
 
 		ChangePosition (newPos);
@@ -26,11 +36,33 @@ public class TreeTile : HexTile {
 
 		if (changeSprite)
 			ChangeSprite ();
+
+		if (changeSeason)
+			ChangeSeason ();
 	}
 
 	public void ChangeMaterial(int newType){
 		type = newType;
 		GetComponent<MeshRenderer>().material = materials[type];
+		switch (type) {
+		case 0:
+		case 1:
+		case 5:
+			weather = "Inactive";
+			break;
+		case 2:
+			weather = "Fair";
+			break;
+		case 3:
+			weather = "Rain";
+			break;
+		case 4:
+			weather = "Sunshine";
+			break;
+		case 6:
+			weather = "Frost";
+			break;
+		}
 	}
 
 	void ChangePosition (Vector3 newPos){
@@ -81,5 +113,9 @@ public class TreeTile : HexTile {
 			spriteRenderer.sprite = sprite9;
 			break;
 		}
+	}
+
+	void ChangeSeason(){
+		season = PlayerManager.Instance.nextSeason;
 	}
 }

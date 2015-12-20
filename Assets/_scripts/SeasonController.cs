@@ -65,7 +65,7 @@ public class SeasonController : MonoBehaviour {
 				PlayerManager.Instance.weatherList.RemoveAt (j);
 			}
 
-			newTile.GetComponent<TreeTile> ().UpdateTile (tileType, newPosition, directions, false);
+			newTile.GetComponent<TreeTile> ().UpdateTile (tileType, newPosition, directions, false, true);
 
 		}
 	}

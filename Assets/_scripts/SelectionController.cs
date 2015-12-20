@@ -55,12 +55,10 @@ public class SelectionController : HexTile {
 			if (PlayerManager.Instance.seasonTiles.Count < 1) {
 				PlayerManager.Instance.EndGame ();
 			}
-
-			if (PlayerManager.Instance.energy < 1) {
+			else if (PlayerManager.Instance.energy < 1) {
 				PlayerManager.Instance.EndGame ();
 			}
-
-			if (PlayerManager.Instance.activeTiles.Count < 1) {
+			else if (PlayerManager.Instance.activeTiles.Count < 1) {
 				treeScript.ChangeSeason ();
 				mainCamera.GetComponent<CameraController> ().ZoomFit ();
 			}
@@ -69,7 +67,7 @@ public class SelectionController : HexTile {
 
 	void MoveSelector(){
 		index++;
-		index = Mathf.Repeat (index, 5);
+		index = Mathf.Repeat (index, 3);
 		transform.position = home + new Vector3 (2 * index * PlayerManager.Instance.hexSize, 0.0f, 0.0f);
 	}
 

@@ -28,7 +28,7 @@ public class NewTileManager : MonoBehaviour {
 		GameObject instance = Instantiate (hexTile);
 		instance.transform.SetParent (transform);
 		bool[] directions = RandomDirections();
-		instance.GetComponent<TreeTile> ().UpdateTile (0, tilePosition, directions, true);
+		instance.GetComponent<TreeTile> ().UpdateTile (0, tilePosition, directions, true, false);
 	}
 
 	bool[] RandomDirections(){
