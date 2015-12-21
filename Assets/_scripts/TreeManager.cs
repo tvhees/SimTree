@@ -8,16 +8,19 @@ public class TreeManager : MonoBehaviour {
 	public float hexSize = 2;
 
 	public void ChangeSeason(){
-		
 		foreach (GameObject branch in PlayerManager.Instance.seasonTiles) {
 			PlayerManager.Instance.activeTiles.Add (branch);
 			branch.GetComponent<TreeTile> ().tileRenderer.sortingLayerName = "Tree";
 		}
 		foreach (GameObject branch in PlayerManager.Instance.treeTiles) {
 			branch.transform.SetParent (transform);
+			branch.layer = LayerMask.NameToLayer("TreeTiles");
 		}
+
+		Debug.Log (PlayerManager.Instance.activeTiles.Count);
 		foreach (GameObject branch in PlayerManager.Instance.activeTiles) {
 			branch.transform.SetParent (transform);
+			branch.layer = LayerMask.NameToLayer("ActiveTiles");
 		}
 		transform.Translate (new Vector3 (0.0f, -Mathf.Sqrt(3) * hexSize, 0.0f));
 		PlayerManager.Instance.seasonTiles.Clear ();

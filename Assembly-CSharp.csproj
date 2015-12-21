@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\_scripts\BackLightController.cs" />
      <Compile Include="Assets\_scripts\BranchGenerator.cs" />
      <Compile Include="Assets\_scripts\BranchTester.cs" />
      <Compile Include="Assets\_scripts\CameraController.cs" />
@@ -61,6 +62,8 @@
      <Compile Include="Assets\_scripts\TreeManager.cs" />
      <Compile Include="Assets\_scripts\TreeTile.cs" />
      <Compile Include="Assets\_scripts\UIManager.cs" />
+     <None Include="Assets\shaders\Diffuse_Rim.shader" />
+     <None Include="Assets\shaders\Outlined_Diffuse.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
