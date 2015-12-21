@@ -1,21 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_scripts\TreeManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/_scripts/PlayerManager.cs">
     <Files>
-      <File FileName="Assets\_scripts\PlayerManager.cs" Line="126" Column="21" />
-      <File FileName="Assets\_scripts\NewTileManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\InformationPanelController.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\CameraController.cs" Line="53" Column="1" />
-      <File FileName="Assets\_scripts\Common\ProcBase.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\BranchGenerator.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\TreeManager.cs" Line="17" Column="19" />
-      <File FileName="Assets\_scripts\RootController.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\TreeTile.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\SeasonController.cs" Line="26" Column="33" />
-      <File FileName="Assets\_scripts\HexTile.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\SelectionController.cs" Line="60" Column="5" />
-      <File FileName="Assets\_scripts\BranchTester.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\Singleton.cs" Line="1" Column="1" />
+      <File FileName="Assets/_scripts/NewTileManager.cs" Line="30" Column="40" />
+      <File FileName="Assets/_scripts/TreeTile.cs" Line="34" Column="3" />
+      <File FileName="Assets/_scripts/RootController.cs" Line="62" Column="38" />
+      <File FileName="Assets/_scripts/SeasonController.cs" Line="68" Column="38" />
+      <File FileName="Assets/_scripts/PlayerManager.cs" Line="38" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

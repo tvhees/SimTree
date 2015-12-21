@@ -32,7 +32,8 @@ public class TreeTile : HexTile {
 
 		ChangePosition (newPos);
 
-		ChangeDirections (newDirections);
+		if (newDirections!=null)
+			ChangeDirections (newDirections);
 
 		if (changeSprite)
 			ChangeSprite ();

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class NewTileManager : MonoBehaviour {
 
-	public GameObject hexTile;
+	public GameObject[] hexTiles;
 	public float spacing = 4.0f;
 
 	void Start(){
@@ -25,20 +25,14 @@ public class NewTileManager : MonoBehaviour {
 	}
 
 	void AddTile(Vector3 tilePosition){
-		GameObject instance = Instantiate (hexTile);
+		if (PlayerManager.Instance.tileIndex.Count < 1)
+			PlayerManager.Instance.CreateTileIndex ();
+		int i = Random.Range (0, PlayerManager.Instance.tileIndex.Count);
+		int j = PlayerManager.Instance.tileIndex [i];
+		PlayerManager.Instance.tileIndex.RemoveAt(i);
+		GameObject instance = Instantiate (hexTiles[j]);
 		instance.transform.SetParent (transform);
-		bool[] directions = RandomDirections();
-		instance.GetComponent<TreeTile> ().UpdateTile (0, tilePosition, directions, true, false);
+		bool[] directions = null;
+		instance.GetComponent<TreeTile> ().UpdateTile (0, tilePosition, directions, false, false);
 	}
-
-	bool[] RandomDirections(){
-		bool[] array = new bool[3]{false, false, false};
-		while (!array [0] && !array [1] && !array [2]) {
-			for (int i = 0; i < array.Length; i++) {
-				array [i] = Random.value > 0.66f;
-			}
-		}
-		return(array);
-	}
-
 }
