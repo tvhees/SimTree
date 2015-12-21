@@ -32,7 +32,6 @@ public class PlayerManager : Singleton<PlayerManager> {
 		generation = 1;
 		size = 3;
 		ChangeSeason ();
-		CreateTileIndex ();
 	}
 
 	void Update(){
