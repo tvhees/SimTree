@@ -58,7 +58,6 @@ public class SelectionController : HexTile {
 				PlayerManager.Instance.EndGame ();
 			}
 			else if (PlayerManager.Instance.activeTiles.Count < 1) {
-				Debug.Log ("Changing Season");
 				treeScript.ChangeSeason ();
 				mainCamera.GetComponent<CameraController> ().ZoomFit ();
 			}

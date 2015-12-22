@@ -19,26 +19,37 @@ public class PlayerManager : Singleton<PlayerManager> {
 	public List<int> tileIndex = new List<int> ();
 	public float hexSize = 2.0f;
 	public List<int> weatherList = new List<int> ();
-	public Camera mainCamera;
+	public GameObject camera1;
 	public GameObject informationPanel;
-	public GameObject uiCamera;
+	public GameObject camera2;
 	public int seasonIndex = 0;
 	public GameObject seasonText;
 
 	private string[] seasons = new string[4]{"Spring", "Summer", "Autumn", "Winter"};
+	private GameObject mainCamera;
+	private GameObject uiCamera;
 
 	void Start(){
-		water = 3;
+		RestartGame ();
+		/*water = 3;
 		energy = 3;
 		generation = 1;
-		size = 3;
+		size = 3;*/
+
+		Debug.Log ("Inbetween");
+
+		Debug.Log (FindObjectsOfType<Camera> ().Length);
+
+		seasonText = GameObject.Find ("SeasonText");
+		informationPanel = GameObject.Find ("InformationPanel");
+		informationPanel.SetActive (false);
+
 		ChangeSeason ();
 	}
 
 	void Update(){
 		if (Input.GetKeyDown (KeyCode.Escape)) {
-			SceneManager.UnloadScene("Main");
-			SceneManager.LoadScene (0);
+			RestartGame();
 		}
 	}
 
@@ -132,7 +143,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 	}
 
 	public void EndGame(){
-		uiCamera.SetActive(false);
+		uiCamera.gameObject.SetActive(false);
 		seasonText.SetActive (false);
 		mainCamera.GetComponent<CameraController>().ZoomOut ();
 		foreach (GameObject tile in activeTiles)
@@ -141,4 +152,16 @@ public class PlayerManager : Singleton<PlayerManager> {
 			Destroy(tile);
 	}
 
+	void RestartGame(){
+		SceneManager.LoadScene ("Main");
+		water = 3;
+		energy = 3;
+		generation = 1;
+		size = 3;
+		tileIndex.Clear ();
+		activeTiles.Clear ();
+		seasonTiles.Clear ();
+		treeTiles.Clear ();
+		weatherList.Clear ();
+	}
 }
