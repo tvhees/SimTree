@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour {
 	public Text seasonText;
 	public Text nextSeasonText;
 
+	private string[] seasons = new string[]{"Autumn", "Winter", "Spring", "Summer"};
+
 	// Use this for initialization
 	void Start () {
 	
@@ -22,7 +24,6 @@ public class UIManager : MonoBehaviour {
 		energyText.text = "Energy: " + PlayerManager.Instance.energy;
 		generationText.text = "Generation: " + PlayerManager.Instance.generation;
 		sizeText.text = "Size: " + PlayerManager.Instance.size;
-		seasonText.text = PlayerManager.Instance.season;
-		nextSeasonText.text = PlayerManager.Instance.nextSeason;
+		seasonText.text = seasons[PlayerManager.Instance.seasonIndex];
 	}
 }

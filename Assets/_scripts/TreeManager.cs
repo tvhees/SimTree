@@ -5,6 +5,7 @@ public class TreeManager : MonoBehaviour {
 
 	public GameObject treeRoot;
 	public GameObject seasonHolder;
+	public GameObject highlightRing;
 	public float hexSize = 2;
 
 	public void ChangeSeason(){
@@ -16,11 +17,13 @@ public class TreeManager : MonoBehaviour {
 			branch.transform.SetParent (transform);
 			branch.layer = LayerMask.NameToLayer("TreeTiles");
 		}
-
-		Debug.Log (PlayerManager.Instance.activeTiles.Count);
+	
 		foreach (GameObject branch in PlayerManager.Instance.activeTiles) {
 			branch.transform.SetParent (transform);
 			branch.layer = LayerMask.NameToLayer("ActiveTiles");
+			GameObject highlight = Instantiate (highlightRing, branch.transform.position, Quaternion.identity) as GameObject;
+			highlight.transform.position -= new Vector3 (0.0f, 0.0f, 1.0f);
+			highlight.transform.SetParent (branch.transform);
 		}
 		transform.Translate (new Vector3 (0.0f, -Mathf.Sqrt(3) * hexSize, 0.0f));
 		PlayerManager.Instance.seasonTiles.Clear ();

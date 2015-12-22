@@ -51,6 +51,7 @@
      <Compile Include="Assets\_scripts\CameraController.cs" />
      <Compile Include="Assets\_scripts\Common\MeshBuilder.cs" />
      <Compile Include="Assets\_scripts\Common\ProcBase.cs" />
+     <Compile Include="Assets\_scripts\HexRing.cs" />
      <Compile Include="Assets\_scripts\HexTile.cs" />
      <Compile Include="Assets\_scripts\InformationPanelController.cs" />
      <Compile Include="Assets\_scripts\NewTileManager.cs" />

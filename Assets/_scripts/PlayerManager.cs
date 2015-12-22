@@ -22,8 +22,9 @@ public class PlayerManager : Singleton<PlayerManager> {
 	public Camera mainCamera;
 	public GameObject informationPanel;
 	public GameObject uiCamera;
+	public int seasonIndex = 0;
+	public GameObject seasonText;
 
-	private int seasonIndex = 0;
 	private string[] seasons = new string[4]{"Spring", "Summer", "Autumn", "Winter"};
 
 	void Start(){
@@ -131,7 +132,8 @@ public class PlayerManager : Singleton<PlayerManager> {
 	}
 
 	public void EndGame(){
-		Destroy (uiCamera);
+		uiCamera.SetActive(false);
+		seasonText.SetActive (false);
 		mainCamera.GetComponent<CameraController>().ZoomOut ();
 		foreach (GameObject tile in activeTiles)
 			Destroy(tile);
