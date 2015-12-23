@@ -11,6 +11,7 @@ public class SelectionController : HexTile {
 	public Camera mainCamera;
 
 	private Renderer tileRenderer;
+	private float alphaChannel;
 	private float hexOffset;
 	private float index = 0;
 	private Vector3 home;
@@ -158,7 +159,7 @@ public class SelectionController : HexTile {
 				break;
 			}
 
-			Collider2D hit = Physics2D.OverlapPoint (prunePosition, LayerMask.NameToLayer("ActiveTiles"));	
+		Collider2D hit = Physics2D.OverlapPoint (prunePosition);	
 			if (hit) {
 				if (!selectedScript.directionsUp [i]) {
 					PlayerManager.Instance.seasonTiles.Remove (hit.gameObject);
