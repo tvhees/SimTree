@@ -9,7 +9,7 @@ public class TreeManager : MonoBehaviour {
 	public float hexSize = 2;
 
 	public void NewTree(){
-		GameObject instance = Instantiate (treeRoot);
+		Instantiate (treeRoot);
 	}
 
 	public void ChangeSeason(){
