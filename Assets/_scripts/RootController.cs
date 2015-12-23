@@ -12,7 +12,9 @@ public class RootController : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
+		transform.SetParent (GameObject.Find ("TreeStructure").transform);
+
 		hexOffset = Mathf.Sqrt(3) * 0.5f * PlayerManager.Instance.hexSize;
 		bool[] tileDirections = new bool[3]{ true, true, true };
 		bool[] rootDirections = new bool[3];

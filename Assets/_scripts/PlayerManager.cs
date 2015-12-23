@@ -19,26 +19,31 @@ public class PlayerManager : Singleton<PlayerManager> {
 	public List<int> tileIndex = new List<int> ();
 	public float hexSize = 2.0f;
 	public List<int> weatherList = new List<int> ();
-	public Camera mainCamera;
+	public int seasonIndex = 0;
+	public GameObject seasonText;
 	public GameObject informationPanel;
-	public GameObject uiCamera;
 
-	private int seasonIndex = 0;
+	private GameObject treeStructure;
 	private string[] seasons = new string[4]{"Spring", "Summer", "Autumn", "Winter"};
+	private Camera mainCamera;
+	private Camera uiCamera;
 
 	void Start(){
-		water = 3;
-		energy = 3;
-		generation = 1;
-		size = 3;
-		ChangeSeason ();
-		CreateTileIndex ();
+		Camera[] cameras = FindObjectsOfType<Camera> ();
+		mainCamera = cameras [0];
+		uiCamera = cameras [1];
+
+		seasonText = GameObject.Find ("SeasonText");
+		informationPanel = GameObject.Find ("InformationPanel");
+		informationPanel.SetActive (false);
+		treeStructure = GameObject.Find ("TreeStructure");
+
+		StartGame ();
 	}
 
 	void Update(){
 		if (Input.GetKeyDown (KeyCode.Escape)) {
-			SceneManager.UnloadScene("Main");
-			SceneManager.LoadScene (0);
+			RestartGame();
 		}
 	}
 
@@ -132,7 +137,9 @@ public class PlayerManager : Singleton<PlayerManager> {
 	}
 
 	public void EndGame(){
-		Destroy (uiCamera);
+
+		uiCamera.gameObject.SetActive(false);
+		seasonText.SetActive (false);
 		mainCamera.GetComponent<CameraController>().ZoomOut ();
 		foreach (GameObject tile in activeTiles)
 			Destroy(tile);
@@ -140,4 +147,36 @@ public class PlayerManager : Singleton<PlayerManager> {
 			Destroy(tile);
 	}
 
+	void StartGame(){
+		water = 3;
+		energy = 3;
+		generation = 1;
+		size = 3;
+		seasonIndex = 0;
+
+		mainCamera.orthographicSize = 20;
+		mainCamera.transform.position = new Vector3 (0, 1, -10);
+
+		treeStructure.GetComponent<TreeManager> ().NewTree();
+
+		ChangeSeason ();
+	}
+
+	void RestartGame(){
+		activeTiles.Clear ();
+		seasonTiles.Clear ();
+		treeTiles.Clear ();
+		weatherList.Clear ();
+		uiCamera.gameObject.SetActive (true);
+		seasonText.SetActive (true);
+
+		foreach (Transform child in treeStructure.transform)
+			Destroy (child.gameObject);
+
+		GameObject seasonHolder = GameObject.Find ("CurrentSeason");
+		if (seasonHolder != null)
+			Destroy (seasonHolder);
+
+		StartGame ();
+	}
 }
