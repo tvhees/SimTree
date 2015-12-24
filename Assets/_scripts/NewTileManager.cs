@@ -37,6 +37,7 @@ public class NewTileManager : MonoBehaviour {
 		PlayerManager.Instance.tileIndex.RemoveAt(i);
 		GameObject instance = Instantiate (hexTiles[j]);
 		instance.transform.SetParent (transform);
+		instance.tag = "InactiveBranch";
 		bool[] directions = null;
 		instance.GetComponent<TreeTile> ().UpdateTile (0, tilePosition, directions, false, false);
 		if (instance.transform.position.x < dragBoundary)

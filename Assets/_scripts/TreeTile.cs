@@ -22,7 +22,6 @@ public class TreeTile : HexTile {
 	public GameObject branchGenerator;
 
 	private Vector3 screenPoint;
-	private Vector3 offset;
 	private Vector3 home;
 	private int activeMask;
 
@@ -35,27 +34,22 @@ public class TreeTile : HexTile {
 			PlayerManager.Instance.informationPanel.GetComponent<InformationPanelController> ().InfoPanelOn (transform.position, season, weather);
 		else if (draggable) {
 			home = transform.position;
-			screenPoint = Camera.main.WorldToScreenPoint(gameObject.transform.position);
-			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 		}
 	}
 
 	void OnMouseDrag(){
 		if (draggable) {
-			Vector3 cursorPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
-			Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(cursorPoint) + offset;
-			transform.position = cursorPosition;
+			Vector2 target = PlayerManager.Instance.mainCamera.ScreenToWorldPoint (Input.mousePosition);
+			Vector3 cursorPoint = new Vector3(target.x, target.y, transform.position.z);
+			transform.position = cursorPoint;
 		}
 	}
 
 	void OnMouseUp(){
 		PlayerManager.Instance.informationPanel.SetActive (false);
-	}
 
-	void OnMouseUpAsButton(){
 		if (draggable) {
-			Vector2 screenPosition = PlayerManager.Instance.uiCamera.WorldToScreenPoint (transform.position);
-			Vector2 target = PlayerManager.Instance.mainCamera.ScreenToWorldPoint (screenPosition);
+			Vector2 target = PlayerManager.Instance.mainCamera.ScreenToWorldPoint (Input.mousePosition);
 			activeMask = 1 << LayerMask.NameToLayer ("ActiveTiles");
 			Collider2D hit = Physics2D.OverlapPoint (target, activeMask);
 			if (hit != null) {
@@ -67,7 +61,7 @@ public class TreeTile : HexTile {
 				transform.position = home;
 		}
 	}
-
+		
 	public void UpdateTile(int newType, Vector3 newPos, bool[] newDirections, bool changeSprite, bool changeSeason){
 		ChangeMaterial (newType);
 
@@ -219,11 +213,14 @@ public class TreeTile : HexTile {
 
 			Collider2D hit = Physics2D.OverlapPoint (prunePosition);	
 			if (hit) {
-				if (!directionsUp [i]) {
+				if (!directionsUp [i] && hit.tag != "InactiveBranch") {
 					PlayerManager.Instance.seasonTiles.Remove (hit.gameObject);
 					PlayerManager.Instance.activeTiles.Remove (hit.gameObject);
 					PlayerManager.Instance.treeTiles.Add (hit.gameObject);
+					hit.gameObject.layer = LayerMask.NameToLayer ("TreeTiles");
 					hit.GetComponent<TreeTile> ().ChangeMaterial (5);
+					if(hit.transform.childCount > 1)
+						Destroy (hit.transform.GetChild (1).gameObject);
 				} else {
 					hit.GetComponent<TreeTile> ().directionsDown [2 - i] = true;
 				}
@@ -246,6 +243,8 @@ public class TreeTile : HexTile {
 
 		branch.GetComponent<BranchGenerator> ().BuildMesh(transform.position + startBranch[i],transform.position + endBranch[j], startAngle[i], endAngle[j]);
 		branch.transform.SetParent(transform);
+
+		tileRenderer.enabled = false;
 
 	}
 }
