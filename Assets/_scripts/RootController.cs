@@ -65,6 +65,7 @@ public class RootController : MonoBehaviour {
 
 			GameObject trunk = Instantiate (trunkParts [i], newRoot.transform.position, Quaternion.Euler(0.0f, 0.0f, -30.0f)) as GameObject;
 			trunk.transform.SetParent (newRoot.transform);
+			newRoot.GetComponent<MeshRenderer> ().enabled = false;
 		}
 		GetComponentInParent<TreeManager> ().ChangeSeason();
 	}

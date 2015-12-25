@@ -22,9 +22,4 @@ public class BranchTester : MonoBehaviour {
 		branch.BuildMesh(transform.position + startBranch[i],transform.position + endBranch[j], startAngle[i], endAngle[j]);
 		branch.transform.SetParent(transform);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

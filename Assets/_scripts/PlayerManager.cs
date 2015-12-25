@@ -22,11 +22,12 @@ public class PlayerManager : Singleton<PlayerManager> {
 	public int seasonIndex = 0;
 	public GameObject seasonText;
 	public GameObject informationPanel;
+	public Camera mainCamera;
+	public Camera uiCamera;
 
 	private GameObject treeStructure;
 	private string[] seasons = new string[4]{"Spring", "Summer", "Autumn", "Winter"};
-	private Camera mainCamera;
-	private Camera uiCamera;
+
 
 	void Start(){
 		Camera[] cameras = FindObjectsOfType<Camera> ();
@@ -133,6 +134,17 @@ public class PlayerManager : Singleton<PlayerManager> {
 				weatherList.AddRange (new int[4] {3, 3, 2, 6});
 				break;
 			}
+		}
+	}
+
+	public void CheckState(){
+		if (seasonTiles.Count < 1)
+			EndGame ();
+		else if (energy < 1)
+			EndGame ();
+		else if (activeTiles.Count < 1) {
+			treeStructure.GetComponent<TreeManager> ().ChangeSeason ();
+			mainCamera.GetComponent<CameraController> ().ZoomFit ();
 		}
 	}
 
