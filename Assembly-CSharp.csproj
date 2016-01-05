@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\_scripts\BackLightController.cs" />
      <Compile Include="Assets\_scripts\BezierGenerator.cs" />
+     <Compile Include="Assets\_scripts\BezierTester.cs" />
      <Compile Include="Assets\_scripts\BranchGenerator.cs" />
      <Compile Include="Assets\_scripts\BranchTester.cs" />
      <Compile Include="Assets\_scripts\CameraController.cs" />

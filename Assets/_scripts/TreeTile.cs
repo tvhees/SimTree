@@ -237,12 +237,15 @@ public class TreeTile : HexTile {
 			new Vector3(0.0f, Mathf.Sqrt(3), 0.0f),
 			new Vector3(1.5f, Mathf.Sqrt(3)/2f, 0.0f)};
 
-		float[] startAngle = new float[]{ -60.0f, 0.0f, 60.0f };
-		float[] endAngle = new float[]{ 60.0f, 0.0f, -60.0f };
+		//float[] startAngle = new float[]{ -60.0f, 0.0f, 60.0f };
+		//float[] endAngle = new float[]{ 60.0f, 0.0f, -60.0f };
+
+		Vector3[] startTangent = new Vector3[]{ new Vector3 (Mathf.Sqrt(3)/2f, 0.5f, 0.0f), new Vector3(0.0f, 1f/Mathf.Sqrt(3), 0.0f), new Vector3(-Mathf.Sqrt(3)/2f, 0.5f, 0.0f) };
+		Vector3[] endTangent = new Vector3[]{ new Vector3 (-Mathf.Sqrt(3)/2f, 0.5f, 0.0f), new Vector3(0.0f, 1f/Mathf.Sqrt(3), 0.0f), new Vector3(Mathf.Sqrt(3)/2f, 0.5f, 0.0f) };
 
 		GameObject branch = Instantiate (branchGenerator);
 
-		branch.GetComponent<BranchGenerator> ().BuildMesh(transform.position + startBranch[i],transform.position + endBranch[j], startAngle[i], endAngle[j]);
+		branch.GetComponent<BezierGenerator> ().BuildMesh(transform.position + startBranch[i],transform.position + endBranch[j], startTangent[i], endTangent[j]);
 		branch.transform.SetParent(transform);
 
 		tileRenderer.enabled = false;

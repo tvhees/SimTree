@@ -6,26 +6,15 @@ using System.Collections;
 	/// </summary>
 public class BezierGenerator : ProcBase	{
 
-	public int timeSteps;
-	public int radialSteps;
-	public float radius;
-	public Vector3[] testArray;
+	public int timeSteps = 5;
+	public int radialSteps = 8;
+	public float radius = 0.6f;
+	public bool taper = true;
 
 	private Vector3[] R;
 	private Vector3[] curvePoints;
 	private Vector3 lastPoint;
-
-	void Update(){
-		if (Input.GetKeyDown (KeyCode.B)) {
-			MeshFilter filter = GetComponent<MeshFilter>();
-			if (filter.sharedMesh != null) {
-				filter.sharedMesh = null;
-			}
-			GetReference (testArray [0], testArray [1], testArray [2], testArray [3]);
-			BuildMesh ();
-		}
-
-	}
+	private float posRadius;
 
 	public void GetReference(Vector3 vIn, Vector3 vOut, Vector3 tangentIn, Vector3 tangentOut){
 		R = new Vector3[4];
@@ -87,8 +76,15 @@ public class BezierGenerator : ProcBase	{
 			//V coordinate is based on height:
 			float v = (float)i / timeSteps;
 
+			//New branches should taper towards the end
+
+			if (taper)
+				posRadius = radius * (1 - v/2);
+			else
+				posRadius = radius;
+
 			//build the ring:
-			BuildRing(meshBuilder, radialSteps, centrePos, radius, v, i > 0, rotation);
+			BuildRing(meshBuilder, radialSteps, centrePos, posRadius, v, i > 0, rotation);
 		}
 
 		Mesh mesh = meshBuilder.CreateMesh();
