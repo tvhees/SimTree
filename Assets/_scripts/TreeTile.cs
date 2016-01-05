@@ -56,6 +56,7 @@ public class TreeTile : HexTile {
 				transform.position = hit.transform.position;
 				PlaceTile (hit.gameObject);
 				PlayerManager.Instance.CheckState ();
+				draggable = false;
 			}
 			else
 				transform.position = home;

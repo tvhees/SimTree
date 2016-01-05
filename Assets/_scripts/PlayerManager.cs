@@ -26,6 +26,8 @@ public class PlayerManager : Singleton<PlayerManager> {
 	public Camera uiCamera;
 
 	private GameObject treeStructure;
+	private GameObject weatherManager;
+	private WeatherController weatherController;
 	private string[] seasons = new string[4]{"Spring", "Summer", "Autumn", "Winter"};
 
 
@@ -38,6 +40,8 @@ public class PlayerManager : Singleton<PlayerManager> {
 		informationPanel = GameObject.Find ("InformationPanel");
 		informationPanel.SetActive (false);
 		treeStructure = GameObject.Find ("TreeStructure");
+		weatherManager = GameObject.Find ("WeatherManager");
+		weatherController = weatherManager.GetComponent<WeatherController> ();
 
 		StartGame ();
 	}
@@ -70,6 +74,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 		case 1:
 		case 2:
 		case 5:
+			weatherController.Fair();
 			break;
 		case 3:
 			Rain();
@@ -85,6 +90,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 
 	void Rain(){
 		water += 4;
+		weatherController.Rain ();
 	}
 
 	void Sunshine(){
@@ -98,6 +104,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 		}
 		else
 			energy--;
+		weatherController.Sunshine ();
 	}
 
 	void Flower(){
@@ -108,6 +115,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 
 	void Frost(){
 		energy -= 1;
+		weatherController.Frost ();
 	}
 
 	public void ChangeSeason(){
@@ -172,6 +180,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 		treeStructure.GetComponent<TreeManager> ().NewTree();
 
 		ChangeSeason ();
+		weatherController.Fair ();
 	}
 
 	void RestartGame(){
