@@ -136,6 +136,105 @@ public abstract class ProcBase : MonoBehaviour
 
 	#endregion
 
+	#region "BuildHex() methods"
+
+	//Builds a hexagonal shape in the XY plane, normals facing in the Z direction
+	//length is the length of the hexagon sides
+	protected void BuildHex(MeshBuilder meshBuilder, Vector3 offset, float length)
+	{
+		meshBuilder.Vertices.Add (new Vector3 (0.0f, length, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (0.0f, length));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (Mathf.Sqrt(3)*length/2, length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (Mathf.Sqrt(3)*length, length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (Mathf.Sqrt(3)*length/2, -length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (Mathf.Sqrt(3)*length, -length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (0.0f, -length, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (0.0f, -length));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (-Mathf.Sqrt(3)*length/2, -length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (-Mathf.Sqrt(3)*length, -length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (-Mathf.Sqrt(3)*length/2, length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (Mathf.Sqrt(3)*length, length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.AddTriangle (0, 1, 5);
+		meshBuilder.AddTriangle (1, 2, 5);
+		meshBuilder.AddTriangle (2, 4, 5);
+		meshBuilder.AddTriangle (2, 3, 4);
+	}
+
+	// Builds a hollow hexagonal shape in the XY plane, normals facing in the Z direction.
+	// length is the length of the hexagon sides, innerProportion is the length of the inner hexagon relative to the outer
+	protected void BuildHexRing(MeshBuilder meshBuilder, Vector3 offset, float length, float innerProportion)
+	{
+		float i_Length = innerProportion * length;
+
+		//Set up the vertices and triangles:
+		meshBuilder.Vertices.Add (new Vector3 (0.0f, length, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (0.0f, length));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (0.0f, i_Length, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (0.0f, i_Length));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (Mathf.Sqrt(3)*length/2, length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (Mathf.Sqrt(3)*length, length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (Mathf.Sqrt(3)*i_Length/2, i_Length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (Mathf.Sqrt(3)*i_Length, i_Length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (Mathf.Sqrt(3)*length/2, -length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (Mathf.Sqrt(3)*length, -length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (Mathf.Sqrt(3)*i_Length/2, -i_Length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (Mathf.Sqrt(3)*i_Length, -i_Length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (0.0f, -length, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (0.0f, -length));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (0.0f, -i_Length, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (0.0f, -i_Length));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (-Mathf.Sqrt(3)*length/2, -length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (-Mathf.Sqrt(3)*length, -length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (-Mathf.Sqrt(3)*i_Length/2, -i_Length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (-Mathf.Sqrt(3)*i_Length, -i_Length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (-Mathf.Sqrt(3)*length/2, length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (Mathf.Sqrt(3)*length, length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		meshBuilder.Vertices.Add (new Vector3 (-Mathf.Sqrt(3)*i_Length/2, i_Length/2, 0.0f));
+		meshBuilder.UVs.Add (new Vector2 (Mathf.Sqrt(3)*i_Length, i_Length/2));
+		meshBuilder.Normals.Add (Vector3.forward);
+
+		for (int i = 0; i < 12; i=i+2) {
+			meshBuilder.AddTriangle (i, (int)Mathf.Repeat(i+2,12), (int)Mathf.Repeat(i+1,12));
+			meshBuilder.AddTriangle ((int)Mathf.Repeat(i+1,12), (int)Mathf.Repeat(i+2,12), (int)Mathf.Repeat(i+3,12));
+		}
+	}
+
+	#endregion
+
 	#region "BuildRing() methods"
 
 	/// <summary>
@@ -353,6 +452,13 @@ public abstract class ProcBase : MonoBehaviour
 		}
 	}
 
+
+	protected void ApplyMesh(MeshBuilder meshBuilder, MeshFilter filter){
+		if (filter != null) {
+			Mesh mesh = filter.mesh;
+			mesh = meshBuilder.CreateMesh(mesh);
+		}
+	}
 	//private void OnDrawGizmos()
 	//{
 	//    Gizmos.DrawCube(transform.position, Vector3.one);

@@ -133,10 +133,10 @@ public class BranchGenerator : ProcBase	{
 			}
 		}
 
-		Mesh mesh = meshBuilder.CreateMesh();
-
-		//Look for a MeshFilter component attached to this GameObject:
 		MeshFilter filter = GetComponent<MeshFilter>();
+		Mesh mesh = filter.mesh;
+		Debug.Log (mesh);
+		mesh = meshBuilder.CreateMesh(mesh);
 
 		//If the MeshFilter exists, attach the new mesh to it.
 		//Assuming the GameObject also has a renderer attached, our new mesh will now be visible in the scene.

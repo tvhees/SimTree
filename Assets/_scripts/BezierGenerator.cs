@@ -6,10 +6,9 @@ using System.Collections;
 	/// </summary>
 public class BezierGenerator : ProcBase	{
 
-	public int timeSteps = 5;
+	public int timeSteps = 8;
 	public int radialSteps = 8;
-	public float radius = 0.6f;
-	public bool taper = true;
+	public float radius = 0.3f;
 
 	private Vector3[] R;
 	private Vector3[] curvePoints;
@@ -39,9 +38,8 @@ public class BezierGenerator : ProcBase	{
 	}
 
 	//Build the mesh:
-	public void BuildMesh(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent)
+	public void BuildMesh(bool taper)
 	{
-		GetReference (start, end, startTangent, endTangent);
 		//Create a new mesh builder:
 		MeshBuilder meshBuilder = new MeshBuilder();
 
@@ -52,8 +50,6 @@ public class BezierGenerator : ProcBase	{
 			
 			//Position on the Bezier Curve at this timestep:
 			Vector3 centrePos = GetPoint((float)i/timeSteps);
-	
-			Debug.Log (centrePos);
 
 			if (i > 0) {
 				Debug.DrawLine (lastPoint, centrePos, Color.red, Mathf.Infinity);
@@ -87,16 +83,8 @@ public class BezierGenerator : ProcBase	{
 			BuildRing(meshBuilder, radialSteps, centrePos, posRadius, v, i > 0, rotation);
 		}
 
-		Mesh mesh = meshBuilder.CreateMesh();
-
 		//Look for a MeshFilter component attached to this GameObject:
 		MeshFilter filter = GetComponent<MeshFilter>();
-
-		//If the MeshFilter exists, attach the new mesh to it.
-		//Assuming the GameObject also has a renderer attached, our new mesh will now be visible in the scene.
-		if (filter != null)
-		{
-			filter.sharedMesh = mesh;
-		}
+		ApplyMesh (meshBuilder, filter);
 	}
 }

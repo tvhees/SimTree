@@ -45,10 +45,14 @@ public class MeshBuilder
 	/// Initialises an instance of the Unity Mesh class, based on the stored values.
 	/// </summary>
 	/// <returns>The completed mesh.</returns>
-	public Mesh CreateMesh()
+	public Mesh CreateMesh(Mesh meshIn)
 	{
-		//Create an instance of the Unity Mesh class:
 		Mesh mesh = new Mesh();
+		//Create an instance of the Unity Mesh class:
+		if (mesh != null){
+			mesh = meshIn;
+			mesh.Clear();
+		}
 
 		//add our vertex and triangle values to the new mesh:
 		mesh.vertices = m_Vertices.ToArray();
@@ -63,6 +67,7 @@ public class MeshBuilder
 			mesh.uv = m_UVs.ToArray();
 
 		//have the mesh recalculate its bounding box (required for proper rendering):
+		mesh.RecalculateNormals ();
 		mesh.RecalculateBounds();
 
 		return mesh;

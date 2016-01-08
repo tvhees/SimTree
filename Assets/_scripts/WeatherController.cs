@@ -13,6 +13,9 @@ public class WeatherController : MonoBehaviour {
 	public void Rain(){
 		ParticleSystem rainSys = rainParticles.GetComponent<ParticleSystem> ();
 		if (rainStop) {
+			// need to stop any other weather systems
+			Fair ();
+
 			var vel = rainSys.velocityOverLifetime;
 
 			AnimationCurve curve = new AnimationCurve();
@@ -39,6 +42,9 @@ public class WeatherController : MonoBehaviour {
 	public void Frost(){
 		ParticleSystem snowSys = snowParticles.GetComponent<ParticleSystem> ();
 		if (snowStop) {
+			// need to stop any other weather systems
+			Fair ();
+
 			var vel = snowSys.velocityOverLifetime;
 
 			AnimationCurve curve = new AnimationCurve ();

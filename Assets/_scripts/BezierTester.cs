@@ -5,6 +5,7 @@ public class BezierTester : MonoBehaviour {
 
 	public int i;
 	public int j;
+	public bool taper;
 
 	// Use this for initialization
 	void Start () {
@@ -20,7 +21,8 @@ public class BezierTester : MonoBehaviour {
 		Vector3[] startTangent = new Vector3[]{ new Vector3 (Mathf.Sqrt(3)/2f, 0.5f, 0.0f), new Vector3(0.0f, 1f/Mathf.Sqrt(3), 0.0f), new Vector3(-Mathf.Sqrt(3)/2f, 0.5f, 0.0f) };
 		Vector3[] endTangent = new Vector3[]{ new Vector3 (-Mathf.Sqrt(3)/2f, 0.5f, 0.0f), new Vector3(0.0f, 1f/Mathf.Sqrt(3), 0.0f), new Vector3(Mathf.Sqrt(3)/2f, 0.5f, 0.0f) };
 
-		branch.BuildMesh(startBranch[i],endBranch[j], startTangent[i], endTangent[j]);
+		branch.GetReference (startBranch [i], endBranch [j], startTangent [i], endTangent [j]);
+		branch.BuildMesh(taper);
 		branch.transform.SetParent(transform);
 	}
 }
