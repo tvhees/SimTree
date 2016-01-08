@@ -6,26 +6,14 @@ using System.Collections;
 	/// </summary>
 public class BezierGenerator : ProcBase	{
 
-	public int timeSteps;
-	public int radialSteps;
-	public float radius;
-	public Vector3[] testArray;
+	public int timeSteps = 8;
+	public int radialSteps = 8;
+	public float radius = 0.3f;
 
 	private Vector3[] R;
 	private Vector3[] curvePoints;
 	private Vector3 lastPoint;
-
-	void Update(){
-		if (Input.GetKeyDown (KeyCode.B)) {
-			MeshFilter filter = GetComponent<MeshFilter>();
-			if (filter.sharedMesh != null) {
-				filter.sharedMesh = null;
-			}
-			GetReference (testArray [0], testArray [1], testArray [2], testArray [3]);
-			BuildMesh ();
-		}
-
-	}
+	private float posRadius;
 
 	public void GetReference(Vector3 vIn, Vector3 vOut, Vector3 tangentIn, Vector3 tangentOut){
 		R = new Vector3[4];
@@ -50,9 +38,8 @@ public class BezierGenerator : ProcBase	{
 	}
 
 	//Build the mesh:
-	public void BuildMesh(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent)
+	public void BuildMesh(bool taper)
 	{
-		GetReference (start, end, startTangent, endTangent);
 		//Create a new mesh builder:
 		MeshBuilder meshBuilder = new MeshBuilder();
 
@@ -63,8 +50,6 @@ public class BezierGenerator : ProcBase	{
 			
 			//Position on the Bezier Curve at this timestep:
 			Vector3 centrePos = GetPoint((float)i/timeSteps);
-	
-			Debug.Log (centrePos);
 
 			if (i > 0) {
 				Debug.DrawLine (lastPoint, centrePos, Color.red, Mathf.Infinity);
@@ -87,20 +72,19 @@ public class BezierGenerator : ProcBase	{
 			//V coordinate is based on height:
 			float v = (float)i / timeSteps;
 
-			//build the ring:
-			BuildRing(meshBuilder, radialSteps, centrePos, radius, v, i > 0, rotation);
-		}
+			//New branches should taper towards the end
 
-		Mesh mesh = meshBuilder.CreateMesh();
+			if (taper)
+				posRadius = radius * (1 - v/2);
+			else
+				posRadius = radius;
+
+			//build the ring:
+			BuildRing(meshBuilder, radialSteps, centrePos, posRadius, v, i > 0, rotation);
+		}
 
 		//Look for a MeshFilter component attached to this GameObject:
 		MeshFilter filter = GetComponent<MeshFilter>();
-
-		//If the MeshFilter exists, attach the new mesh to it.
-		//Assuming the GameObject also has a renderer attached, our new mesh will now be visible in the scene.
-		if (filter != null)
-		{
-			filter.sharedMesh = mesh;
-		}
+		ApplyMesh (meshBuilder, filter);
 	}
 }

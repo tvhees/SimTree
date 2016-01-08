@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HexRing : MonoBehaviour {
+public class HexRing : ProcBase {
 
 	public float m_Length;
 	public float innerProportion = 0.9f;
 	public float m_rotation = 30.0f;
-	public Vector3 m_pos;
 	public float flickerSpeed = 2.5f;
 
 	private Renderer tileRenderer;
-	private MeshBuilder hexMesh = new MeshBuilder();
 
 	void Awake(){
 		tileRenderer = GetComponent<MeshRenderer> ();
@@ -23,69 +21,13 @@ public class HexRing : MonoBehaviour {
 	}
 
 	void Start(){
-		m_Length = PlayerManager.Instance.hexSize;
-		float i_Length = innerProportion * m_Length;
+		MeshBuilder meshBuilder = new MeshBuilder ();
 
-		//Set up the vertices and triangles:
-		hexMesh.Vertices.Add (new Vector3 (0.0f, m_Length, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (0.0f, m_Length));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (0.0f, i_Length, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (0.0f, i_Length));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (Mathf.Sqrt(3)*m_Length/2, m_Length/2, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (Mathf.Sqrt(3)*m_Length, m_Length/2));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (Mathf.Sqrt(3)*i_Length/2, i_Length/2, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (Mathf.Sqrt(3)*i_Length, i_Length/2));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (Mathf.Sqrt(3)*m_Length/2, -m_Length/2, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (Mathf.Sqrt(3)*m_Length, -m_Length/2));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (Mathf.Sqrt(3)*i_Length/2, -i_Length/2, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (Mathf.Sqrt(3)*i_Length, -i_Length/2));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (0.0f, -m_Length, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (0.0f, -m_Length));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (0.0f, -i_Length, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (0.0f, -i_Length));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (-Mathf.Sqrt(3)*m_Length/2, -m_Length/2, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (-Mathf.Sqrt(3)*m_Length, -m_Length/2));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (-Mathf.Sqrt(3)*i_Length/2, -i_Length/2, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (-Mathf.Sqrt(3)*i_Length, -i_Length/2));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (-Mathf.Sqrt(3)*m_Length/2, m_Length/2, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (Mathf.Sqrt(3)*m_Length, m_Length/2));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		hexMesh.Vertices.Add (new Vector3 (-Mathf.Sqrt(3)*i_Length/2, i_Length/2, 0.0f));
-		hexMesh.UVs.Add (new Vector2 (Mathf.Sqrt(3)*i_Length, i_Length/2));
-		hexMesh.Normals.Add (Vector3.forward);
-
-		for (int i = 0; i < 12; i=i+2) {
-			hexMesh.AddTriangle (i, (int)Mathf.Repeat(i+2,12), (int)Mathf.Repeat(i+1,12));
-			hexMesh.AddTriangle ((int)Mathf.Repeat(i+1,12), (int)Mathf.Repeat(i+2,12), (int)Mathf.Repeat(i+3,12));
-		}
+		BuildHexRing (meshBuilder, Vector3.zero, PlayerManager.Instance.hexSize, innerProportion);
 
 		//Create the mesh:
 		MeshFilter filter = GetComponent<MeshFilter> ();
-
-		if (filter != null) {
-			filter.sharedMesh = hexMesh.CreateMesh ();
-		}
+		ApplyMesh (meshBuilder, filter);
 			
 		this.transform.rotation = Quaternion.Euler (0.0f, 0.0f, m_rotation);
 	}

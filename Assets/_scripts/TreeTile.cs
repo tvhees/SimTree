@@ -7,6 +7,7 @@ public class TreeTile : HexTile {
 	public Material[] materials;
 	public bool[] directionsUp = new bool[3];
 	public bool[] directionsDown = new bool[3]{false, false, false};
+	public Vector3[] tangentsDown = new Vector3[3];
 	public Sprite sprite1;
 	public Sprite sprite3;
 	public Sprite sprite4;
@@ -21,12 +22,17 @@ public class TreeTile : HexTile {
 	private GameObject treeManager;
 	public GameObject branchGenerator;
 
+	private Vector3[] tangentsUp = new Vector3[3];
+	private Vector3 m_pos;
 	private Vector3 screenPoint;
 	private Vector3 home;
 	private int activeMask;
 
 	void Awake(){
 		treeManager = GameObject.Find ("TreeStructure");
+		float size = PlayerManager.Instance.hexSize;
+		tangentsUp = new Vector3[]{ new Vector3 (-1 * size * Mathf.Sqrt(3)/4f, size * 0.25f, 0.0f), new Vector3(0.0f, size * 0.5f/Mathf.Sqrt(3), 0.0f), new Vector3(size * Mathf.Sqrt(3)/4f, size * 0.25f, 0.0f) };
+		tangentsDown = new Vector3[]{ new Vector3 (size * Mathf.Sqrt(3)/4f, size * 0.25f, 0.0f), new Vector3(0.0f, size * 0.5f/Mathf.Sqrt(3), 0.0f), new Vector3(-1 *size * Mathf.Sqrt(3)/4f, size * 0.25f, 0.0f) };
 	}
 
 	void OnMouseDown(){
@@ -168,6 +174,9 @@ public class TreeTile : HexTile {
 		// Run any player effects from the season tile
 		PlayerManager.Instance.ResolveTile (seasonTile);
 
+		// This tile needs to know relative branch directions now
+		directionsDown = seasonTile.GetComponent<TreeTile> ().directionsDown;
+
 		// Destroy tiles that now cannot be accessed
 		PruneTree();
 
@@ -176,7 +185,7 @@ public class TreeTile : HexTile {
 
 		// Procedurally Generate Branches as required
 		for (int i = 0; i < 3; i++) {
-			if (seasonTile.GetComponent<TreeTile> ().directionsDown [i]) {
+			if (directionsDown[i]) {
 				for (int j = 0; j < 3; j++) {
 					if (directionsUp [j])
 						MakeBranches (i, j);
@@ -198,17 +207,21 @@ public class TreeTile : HexTile {
 
 	void PruneTree(){
 		Vector3 prunePosition = transform.position;
+		Vector3 adjustPosition = transform.position;
 		float hexOffset = Mathf.Sqrt(3) * 0.5f * PlayerManager.Instance.hexSize;
 		for (int i = 0; i < 3; i++) {
 			switch (i) {
 			case 0:
 				prunePosition = transform.position + new Vector3 (-Mathf.Sqrt(3)*hexOffset, hexOffset, 0.0f);
+				adjustPosition = transform.position + new Vector3 (-Mathf.Sqrt(3)*hexOffset, -hexOffset, 0.0f);
 				break;
 			case 1:
 				prunePosition = transform.position + new Vector3 (0, hexOffset*2, 0.0f);
+				adjustPosition = transform.position + new Vector3 (0, -hexOffset*2, 0.0f);
 				break;
 			case 2:
 				prunePosition = transform.position + new Vector3 (Mathf.Sqrt(3)*hexOffset, hexOffset, 0.0f);
+				adjustPosition = transform.position + new Vector3 (Mathf.Sqrt(3)*hexOffset, -hexOffset, 0.0f);
 				break;
 			}
 
@@ -224,8 +237,19 @@ public class TreeTile : HexTile {
 						Destroy (hit.transform.GetChild (1).gameObject);
 				} else {
 					hit.GetComponent<TreeTile> ().directionsDown [2 - i] = true;
+					hit.GetComponent<TreeTile> ().tangentsDown [2 - i] = tangentsUp [i];
 				}
-			}	
+			}
+
+			hit = Physics2D.OverlapPoint (adjustPosition);
+			//Debug.Log (i + " " + directionsDown[i] + ": " + hit);
+			if (hit && directionsDown[i]) {
+				if(hit.transform.childCount > 0){
+					BezierGenerator[] branches = hit.GetComponentsInChildren<BezierGenerator> ();
+					foreach (BezierGenerator branch in branches)
+						branch.BuildMesh (false);
+				}
+			}
 		}
 	}
 
@@ -237,12 +261,10 @@ public class TreeTile : HexTile {
 			new Vector3(0.0f, Mathf.Sqrt(3), 0.0f),
 			new Vector3(1.5f, Mathf.Sqrt(3)/2f, 0.0f)};
 
-		float[] startAngle = new float[]{ -60.0f, 0.0f, 60.0f };
-		float[] endAngle = new float[]{ 60.0f, 0.0f, -60.0f };
-
 		GameObject branch = Instantiate (branchGenerator);
 
-		branch.GetComponent<BranchGenerator> ().BuildMesh(transform.position + startBranch[i],transform.position + endBranch[j], startAngle[i], endAngle[j]);
+		branch.GetComponent<BezierGenerator> ().GetReference(transform.position + startBranch[i],transform.position + endBranch[j], tangentsDown[i], tangentsUp[j]);
+		branch.GetComponent<BezierGenerator> ().BuildMesh (true);
 		branch.transform.SetParent(transform);
 
 		tileRenderer.enabled = false;
