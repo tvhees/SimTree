@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour {
 	public Text generationText;
 	public Text sizeText;
 	public Text seasonText;
+	public Text environmentText;
+	public Text strengthText;
 
 	private string[] seasons = new string[]{"Autumn", "Winter", "Spring", "Summer"};
 
@@ -20,6 +22,8 @@ public class UIManager : MonoBehaviour {
 			generationText.text = "Generation: " + PlayerManager.Instance.generation;
 			sizeText.text = "Size: " + PlayerManager.Instance.size;
 			seasonText.text = seasons [PlayerManager.Instance.seasonIndex];
+			environmentText.text = PlayerManager.Instance.environment;
+			strengthText.text = "Strength: " + PlayerManager.Instance.strength;
 		}
 	}
 }

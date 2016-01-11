@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 2f95cabff63a94fdabae2407e2f1783b
+timeCreated: 1452516544
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - diseaseSprite: {fileID: 21300000, guid: 5bc73adb0321d4268a6e8c930e738332, type: 3}
+  - windSprite: {fileID: 21300000, guid: c9cfd3fe46a4b4ccc80773c980596faf, type: 3}
+  - lightningSprite: {fileID: 21300000, guid: 9480116ecb061e143bc7d70d2369b3dc, type: 3}
+  - insectSprite: {fileID: 21300000, guid: bd7d00a1cf166407ba5abe206605e7aa, type: 3}
+  - eventSprite: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

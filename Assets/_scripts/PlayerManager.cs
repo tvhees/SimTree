@@ -24,10 +24,15 @@ public class PlayerManager : Singleton<PlayerManager> {
 	public GameObject informationPanel;
 	public Camera mainCamera;
 	public Camera uiCamera;
+	public string environment = "No environment";
+	public bool seedGrowth = false;
+	public int strength;
 
 	private GameObject treeStructure;
-	private GameObject weatherManager;
+	private GameObject gameManager;
 	private WeatherController weatherController;
+	private EnvironmentController environmentController;
+	private EventController eventController;
 	private string[] seasons = new string[4]{"Spring", "Summer", "Autumn", "Winter"};
 
 
@@ -40,8 +45,10 @@ public class PlayerManager : Singleton<PlayerManager> {
 		informationPanel = GameObject.Find ("InformationPanel");
 		informationPanel.SetActive (false);
 		treeStructure = GameObject.Find ("TreeStructure");
-		weatherManager = GameObject.Find ("WeatherManager");
-		weatherController = weatherManager.GetComponent<WeatherController> ();
+		gameManager = GameObject.Find ("GameManager");
+		weatherController = gameManager.GetComponent<WeatherController> ();
+		environmentController = gameManager.GetComponent<EnvironmentController> ();
+		eventController = gameManager.GetComponent<EventController> ();
 
 		StartGame ();
 	}
@@ -58,64 +65,47 @@ public class PlayerManager : Singleton<PlayerManager> {
 	}
 
 	public void ResolveTile(GameObject tile){
-		// 1 energy required for growth
+		// Tiles have a base cost for growth: 1 energy + 1 water or 1 additional energy. Seed growth requires additional energy.
 		energy--;
-
-		// 1 water evaporation, tax of one energy if not available
+		if (seedGrowth)
+			energy--;
 		if (water > 0)
 			water--;
 		else
 			energy--;
 
+		// Tiles may have a weather type which further modifies resources or graphics
 		int tileWeather = tile.GetComponent<TreeTile> ().type;
 
 		switch (tileWeather) {
+		// No special effect for new tiles, neutral tiles, or leaf tiles
 		case 0:
 		case 1:
-		case 2:
 		case 5:
-			weatherController.Fair();
+			break;
+		case 2:
+			weatherController.Fair ();
 			break;
 		case 3:
-			Rain();
+			weatherController.Rain ();
 			break;
 		case 4:
-			Sunshine();
+			weatherController.Sunshine ();
 			break;
 		case 6:
-			Frost();
+			weatherController.Frost ();
 			break;
 		}
+
+		// Tiles may have a special event which typically modifies tree growth or status
+		string tileEvent = tile.GetComponent<TreeTile>().eventType;
+
+		if (tileEvent!="None")
+			eventController.ResolveEvent (tileEvent, tile);
 	}
 
-	void Rain(){
-		water += 4;
-		weatherController.Rain ();
-	}
-
-	void Sunshine(){
-		if (water > 0) {
-			for (int i = 0; i < 2; i++) {
-				if (water > 0) {
-					water--;
-					energy += 2;
-				} 
-			}
-		}
-		else
-			energy--;
-		weatherController.Sunshine ();
-	}
-
-	void Flower(){
-		if (energy > 3) {
-			// Start new tree!
-		}
-	}
-
-	void Frost(){
-		energy -= 1;
-		weatherController.Frost ();
+	void Reproduce(){
+		RestartGame ();
 	}
 
 	public void ChangeSeason(){
@@ -124,6 +114,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 		seasonIndex = (int)Mathf.Repeat (seasonIndex, 4);
 		nextSeason = seasons [seasonIndex];
 		weatherList.Clear ();
+		strength++;
 	}
 
 	public void WeatherSelector(){
@@ -150,6 +141,8 @@ public class PlayerManager : Singleton<PlayerManager> {
 			EndGame ();
 		else if (energy < 1)
 			EndGame ();
+		else if (season == "Spring" && seedGrowth)
+			Reproduce();
 		else if (activeTiles.Count < 1) {
 			treeStructure.GetComponent<TreeManager> ().ChangeSeason ();
 			mainCamera.GetComponent<CameraController> ().ZoomFit ();
@@ -172,6 +165,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 		energy = 3;
 		generation = 1;
 		size = 3;
+		strength = 1;
 		seasonIndex = 0;
 
 		mainCamera.orthographicSize = 20;
@@ -179,8 +173,10 @@ public class PlayerManager : Singleton<PlayerManager> {
 
 		treeStructure.GetComponent<TreeManager> ().NewTree();
 
+		seedGrowth = false;
 		ChangeSeason ();
 		weatherController.Fair ();
+		environmentController.NewEnvironment ();
 	}
 
 	void RestartGame(){

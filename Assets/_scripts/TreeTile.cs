@@ -19,9 +19,10 @@ public class TreeTile : HexTile {
 	public string season = "Spring";
 	public MeshRenderer tileRenderer;
 	public bool draggable;
-	private GameObject treeManager;
 	public GameObject branchGenerator;
+	public string eventType = "None";	
 
+	private GameObject treeManager;
 	private Vector3[] tangentsUp = new Vector3[3];
 	private Vector3 m_pos;
 	private Vector3 screenPoint;
@@ -69,7 +70,7 @@ public class TreeTile : HexTile {
 		}
 	}
 		
-	public void UpdateTile(int newType, Vector3 newPos, bool[] newDirections, bool changeSprite, bool changeSeason){
+	public void UpdateTile(int newType, Vector3 newPos, bool[] newDirections, bool changeSprite, bool changeSeason, bool changeEvent){
 		ChangeMaterial (newType);
 
 		ChangePosition (newPos);
@@ -82,6 +83,9 @@ public class TreeTile : HexTile {
 
 		if (changeSeason)
 			ChangeSeason ();
+
+		if (changeEvent)
+			ChangeEvent ();
 	}
 
 	public void ChangeMaterial(int newType){
@@ -156,6 +160,10 @@ public class TreeTile : HexTile {
 			spriteRenderer.sprite = sprite9;
 			break;
 		}
+	}
+
+	void ChangeEvent(){
+		eventType = GetComponentInChildren<EventSpriteManager> ().SetEvent ();
 	}
 
 	void ChangeSeason(){

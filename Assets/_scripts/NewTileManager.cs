@@ -39,7 +39,7 @@ public class NewTileManager : MonoBehaviour {
 		instance.transform.SetParent (transform);
 		instance.tag = "InactiveBranch";
 		bool[] directions = null;
-		instance.GetComponent<TreeTile> ().UpdateTile (0, tilePosition, directions, false, false);
+		instance.GetComponent<TreeTile> ().UpdateTile (0, tilePosition, directions, false, false, false);
 		if (instance.transform.position.x < dragBoundary)
 			instance.GetComponent<TreeTile> ().draggable = true;
 	}

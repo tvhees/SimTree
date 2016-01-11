@@ -40,7 +40,7 @@ public class RootController : MonoBehaviour {
 				break;
 			}
 
-			startingTiles[i].UpdateTile(tileType, newPosition, tileDirections, false, false);
+			startingTiles[i].UpdateTile(tileType, newPosition, tileDirections, false, false, false);
 			startingTiles[i].directionsDown = rootDirections;
 		}
 
@@ -61,7 +61,7 @@ public class RootController : MonoBehaviour {
 			Vector3 tilePosition = new Vector3 (0.0f, -2 * Mathf.Sqrt (3) * i, 0.0f);
 			PlayerManager.Instance.treeTiles.Add (newRoot);
 
-			newRoot.GetComponent<TreeTile> ().UpdateTile (0, tilePosition, tileDirections, true, false);
+			newRoot.GetComponent<TreeTile> ().UpdateTile (0, tilePosition, tileDirections, true, false, false);
 
 			GameObject trunk = Instantiate (trunkParts [i], newRoot.transform.position, Quaternion.Euler(0.0f, 0.0f, -30.0f)) as GameObject;
 			trunk.transform.SetParent (newRoot.transform);

@@ -1,20 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\_scripts\WeatherController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/_scripts/PlayerManager.cs">
     <Files>
-      <File FileName="Assets\_scripts\BezierGenerator.cs" Line="9" Column="26" />
-      <File FileName="Assets\_scripts\Common\MeshBuilder.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\HexTile.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\Common\ProcBase.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\HexRing.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\TreeTile.cs" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\BezierTester.cs" Line="1" Column="1" />
-      <File FileName="Assets\shaders\Outline_Transparent.shader" Line="18" Column="2" />
-      <File FileName="Assets\_scripts\Outliner.cs" Line="36" Column="4" />
-      <File FileName="Assets\shaders\Outline_2DSprite.shader" Line="27" Column="5" />
-      <File FileName="Assets\shaders\Outline_Outline.shader" Line="1" Column="1" />
-      <File FileName="Assets\shaders\Outlined_Diffuse.shader" Line="1" Column="1" />
-      <File FileName="Assets\_scripts\WeatherController.cs" Line="21" Column="27" />
+      <File FileName="Assets/_scripts/EventController.cs" Line="28" Column="18" />
+      <File FileName="Assets/_scripts/EventSpriteManager.cs" Line="25" Column="22" />
+      <File FileName="Assets/_scripts/EnvironmentController.cs" Line="10" Column="1" />
+      <File FileName="Assets/_scripts/PlayerManager.cs" Line="169" Column="19" />
+      <File FileName="Assets/_scripts/WeatherController.cs" Line="55" Column="2" />
+      <File FileName="Assets/_scripts/UIManager.cs" Line="26" Column="59" />
+      <File FileName="Assets/_scripts/TreeTile.cs" Line="73" Column="24" />
+      <File FileName="Assets/_scripts/NewTileManager.cs" Line="42" Column="98" />
+      <File FileName="Assets/_scripts/RootController.cs" Line="64" Column="101" />
+      <File FileName="Assets/_scripts/SeasonController.cs" Line="63" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

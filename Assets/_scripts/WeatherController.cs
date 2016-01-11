@@ -11,6 +11,9 @@ public class WeatherController : MonoBehaviour {
 	private bool snowStop;
 
 	public void Rain(){
+
+		PlayerManager.Instance.water += 4;
+
 		ParticleSystem rainSys = rainParticles.GetComponent<ParticleSystem> ();
 		if (rainStop) {
 			// need to stop any other weather systems
@@ -36,13 +39,26 @@ public class WeatherController : MonoBehaviour {
 	}
 
 	public void Sunshine(){
-		Fair ();
+		if (PlayerManager.Instance.water > 0) {
+			for (int i = 0; i < 2; i++) {
+				if (PlayerManager.Instance.water > 0) {
+					PlayerManager.Instance.water--;
+					PlayerManager.Instance.energy += 2;
+				} 
+			}
+		}
+		else
+			PlayerManager.Instance.energy--;
+
+		// no weather system change enabled at the moment
 	}
 
 	public void Frost(){
+		PlayerManager.Instance.energy -= 1;
+
 		ParticleSystem snowSys = snowParticles.GetComponent<ParticleSystem> ();
 		if (snowStop) {
-			// need to stop any other weather systems
+			// stop any other weather systems
 			Fair ();
 
 			var vel = snowSys.velocityOverLifetime;
