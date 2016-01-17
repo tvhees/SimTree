@@ -69,10 +69,10 @@
      <Compile Include="Assets\_scripts\TreeTile.cs" />
      <Compile Include="Assets\_scripts\UIManager.cs" />
      <Compile Include="Assets\_scripts\WeatherController.cs" />
-     <None Include="Assets\shaders\Outline_Outline.shader" />
-     <None Include="Assets\shaders\Outlined_Diffuse.shader" />
-     <None Include="Assets\shaders\Outline_Transparent.shader" />
-     <None Include="Assets\shaders\Outline_2DSprite.shader" />
+     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
+     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
+     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
+     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

@@ -35,7 +35,6 @@ public class TreeManager : MonoBehaviour {
 				highlight.transform.position = branch.transform.position - new Vector3 (0.0f, 0.0f, 1.0f);
 				highlight.transform.SetParent (branch.transform);
 			} else {
-				Debug.Log ("Destroying unreachable active tile");
 				// Add an active tile that has no roots to the destroy list
 				destroyList.Add (branch);
 			}

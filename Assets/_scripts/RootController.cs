@@ -6,6 +6,7 @@ public class RootController : MonoBehaviour {
 
 	public GameObject root;
 	public GameObject[] trunkParts;
+	public GameObject ground;
 
 	private float hexOffset;
 
@@ -67,6 +68,10 @@ public class RootController : MonoBehaviour {
 			trunk.transform.SetParent (newRoot.transform);
 			newRoot.GetComponent<MeshRenderer> ().enabled = false;
 		}
+
+		GameObject newGround = Instantiate (ground) as GameObject;
+		newGround.transform.SetParent (transform.parent);
+
 		GetComponentInParent<TreeManager> ().ChangeSeason();
 	}
 }

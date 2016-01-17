@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EventSpriteManager : MonoBehaviour {
 
@@ -7,27 +8,41 @@ public class EventSpriteManager : MonoBehaviour {
 	public Sprite windSprite;
 	public Sprite lightningSprite;
 	public Sprite insectSprite;
+	public Sprite wildfireSprite;
+	public Sprite floodSprite;
 	public SpriteRenderer eventSprite;
 
+	private GameObject gameManager;
+	private EventController eventController;
+
 	public string SetEvent(){
-		int eventType = Random.Range (0, 10);
+		gameManager = GameObject.Find ("GameManager");
+		eventController = gameManager.GetComponent<EventController> ();
+		string eventString = eventController.GetEvent ();
 
-		if (eventType == 6) {
+		eventSprite = GetComponent<SpriteRenderer> ();
+
+		switch (eventString) {
+		case "Disease":
 			eventSprite.sprite = diseaseSprite;
-			return "Disease";
-		} else if (eventType == 7) {
+			break;
+		case "Wind":
 			eventSprite.sprite = windSprite;
-			return "Wind";
-		} else if (eventType == 8) {
+			break;
+		case "Lightning":
 			eventSprite.sprite = lightningSprite;
-			return "Lightning";
-		} else if (eventType == 9) {
+			break;
+		case "Insect":
 			eventSprite.sprite = insectSprite;
-			return "Insect";
+			break;
+		case "Wildfire":
+			eventSprite.sprite = wildfireSprite;
+			break;
+		case "Flood":
+			eventSprite.sprite = floodSprite;
+			break;
 		}
-		else
-			return "None";
+
+		return eventString;
 	}
-
-
 }

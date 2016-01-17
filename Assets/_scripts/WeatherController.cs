@@ -6,9 +6,11 @@ public class WeatherController : MonoBehaviour {
 	public GameObject windZone;
 	public GameObject rainParticles;
 	public GameObject snowParticles;
+	public GameObject windParticles;
 
 	private bool rainStop;
 	private bool snowStop;
+	private bool windStop;
 
 	public void Rain(){
 
@@ -31,11 +33,14 @@ public class WeatherController : MonoBehaviour {
 	}
 
 	public void Fair(){
-		rainParticles.GetComponent<ParticleSystem> ().Stop();
+		rainParticles.GetComponent<ParticleSystem> ().Stop ();
 		rainStop = true;
 
-		snowParticles.GetComponent<ParticleSystem> ().Stop();
+		snowParticles.GetComponent<ParticleSystem> ().Stop ();
 		snowStop = true;
+
+		windParticles.GetComponent<ParticleSystem> ().Stop ();
+		windStop = true;
 	}
 
 	public void Sunshine(){
@@ -70,6 +75,16 @@ public class WeatherController : MonoBehaviour {
 
 			snowSys.Play ();
 			snowStop = false;
+		}
+	}
+
+	public void Wind(){
+
+		ParticleSystem windSys = windParticles.GetComponent<ParticleSystem> ();
+		if (windStop) {
+			// need to stop any other weather systems
+			windSys.Play ();
+			windStop = false;
 		}
 	}
 }
