@@ -19,9 +19,11 @@ public class TreeTile : HexTile {
 	public string season = "Spring";
 	public MeshRenderer tileRenderer;
 	public bool draggable;
-	private GameObject treeManager;
 	public GameObject branchGenerator;
+	public string eventType = "None";	
+	public bool destroyTag = false;
 
+	private GameObject treeManager;
 	private Vector3[] tangentsUp = new Vector3[3];
 	private Vector3 m_pos;
 	private Vector3 screenPoint;
@@ -69,7 +71,7 @@ public class TreeTile : HexTile {
 		}
 	}
 		
-	public void UpdateTile(int newType, Vector3 newPos, bool[] newDirections, bool changeSprite, bool changeSeason){
+	public void UpdateTile(int newType, Vector3 newPos, bool[] newDirections, bool changeSprite, bool changeSeason, bool changeEvent){
 		ChangeMaterial (newType);
 
 		ChangePosition (newPos);
@@ -82,6 +84,9 @@ public class TreeTile : HexTile {
 
 		if (changeSeason)
 			ChangeSeason ();
+
+		if (changeEvent)
+			ChangeEvent ();
 	}
 
 	public void ChangeMaterial(int newType){
@@ -158,6 +163,10 @@ public class TreeTile : HexTile {
 		}
 	}
 
+	void ChangeEvent(){
+		eventType = GetComponentInChildren<EventSpriteManager> ().SetEvent ();
+	}
+
 	void ChangeSeason(){
 		season = PlayerManager.Instance.nextSeason;
 	}
@@ -172,7 +181,7 @@ public class TreeTile : HexTile {
 		PlayerManager.Instance.treeTiles.Add (gameObject);
 
 		// Run any player effects from the season tile
-		PlayerManager.Instance.ResolveTile (seasonTile);
+		PlayerManager.Instance.ResolveTile (seasonTile, gameObject);
 
 		// This tile needs to know relative branch directions now
 		directionsDown = seasonTile.GetComponent<TreeTile> ().directionsDown;
@@ -227,14 +236,21 @@ public class TreeTile : HexTile {
 
 			Collider2D hit = Physics2D.OverlapPoint (prunePosition);	
 			if (hit) {
-				if (!directionsUp [i] && hit.tag != "InactiveBranch") {
+				if (destroyTag && hit.tag != "InactiveBranch") {
+					// For fires etc we don't want to leave branches behind
+					PlayerManager.Instance.seasonTiles.Remove (hit.gameObject);
+					PlayerManager.Instance.activeTiles.Remove (hit.gameObject);
+					Destroy (hit.gameObject);
+				} else if (!directionsUp [i] && hit.tag != "InactiveBranch") {
 					PlayerManager.Instance.seasonTiles.Remove (hit.gameObject);
 					PlayerManager.Instance.activeTiles.Remove (hit.gameObject);
 					PlayerManager.Instance.treeTiles.Add (hit.gameObject);
+
 					hit.gameObject.layer = LayerMask.NameToLayer ("TreeTiles");
 					hit.GetComponent<TreeTile> ().ChangeMaterial (5);
-					if(hit.transform.childCount > 1)
-						Destroy (hit.transform.GetChild (1).gameObject);
+					int childCount = hit.transform.childCount;
+					for (int c = 0; c < childCount; c++)
+						Destroy (hit.transform.GetChild (c).gameObject);
 				} else {
 					hit.GetComponent<TreeTile> ().directionsDown [2 - i] = true;
 					hit.GetComponent<TreeTile> ().tangentsDown [2 - i] = tangentsUp [i];
@@ -242,7 +258,6 @@ public class TreeTile : HexTile {
 			}
 
 			hit = Physics2D.OverlapPoint (adjustPosition);
-			//Debug.Log (i + " " + directionsDown[i] + ": " + hit);
 			if (hit && directionsDown[i]) {
 				if(hit.transform.childCount > 0){
 					BezierGenerator[] branches = hit.GetComponentsInChildren<BezierGenerator> ();

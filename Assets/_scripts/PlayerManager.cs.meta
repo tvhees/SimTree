@@ -1,14 +1,15 @@
 fileFormatVersion: 2
 guid: 473d40637e0d0478da8baa6c6b62057d
-timeCreated: 1450779410
+timeCreated: 1452588200
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - camera1: {fileID: 159764, guid: 9a80d728497b1d945ac8522935b2c5e4, type: 2}
-  - informationPanel: {instanceID: 0}
-  - camera2: {fileID: 114552, guid: 6fd3980b7ebf23f4abfc0cf3d56c018c, type: 2}
   - seasonText: {instanceID: 0}
+  - informationPanel: {instanceID: 0}
+  - mainCamera: {instanceID: 0}
+  - uiCamera: {instanceID: 0}
+  - ground: {fileID: 185206, guid: 66f1a9c1a7b6b4af1b2f2f7c24c06ffd, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

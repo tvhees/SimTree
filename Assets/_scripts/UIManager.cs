@@ -9,8 +9,8 @@ public class UIManager : MonoBehaviour {
 	public Text generationText;
 	public Text sizeText;
 	public Text seasonText;
-
-	private string[] seasons = new string[]{"Autumn", "Winter", "Spring", "Summer"};
+	public Text environmentText;
+	public Text strengthText;
 
 	// Update is called once per frame
 	void Update () {
@@ -19,7 +19,9 @@ public class UIManager : MonoBehaviour {
 			energyText.text = "Energy: " + PlayerManager.Instance.energy;
 			generationText.text = "Generation: " + PlayerManager.Instance.generation;
 			sizeText.text = "Size: " + PlayerManager.Instance.size;
-			seasonText.text = seasons [PlayerManager.Instance.seasonIndex];
+			seasonText.text = PlayerManager.Instance.season;
+			environmentText.text = PlayerManager.Instance.environment;
+			strengthText.text = "Strength: " + PlayerManager.Instance.strength;
 		}
 	}
 }
