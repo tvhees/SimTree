@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour {
 	public Text seasonText;
 	public Text environmentText;
 	public Text strengthText;
+    public ResourceMeter waterMeter, energyMeter;
 
 	// Update is called once per frame
 	void Update () {
@@ -22,6 +23,9 @@ public class UIManager : MonoBehaviour {
 			seasonText.text = PlayerManager.Instance.season;
 			environmentText.text = PlayerManager.Instance.environment;
 			strengthText.text = "Strength: " + PlayerManager.Instance.strength;
+
+            waterMeter.UpdateMeter(PlayerManager.Instance.water);
+            energyMeter.UpdateMeter(PlayerManager.Instance.energy);
 		}
 	}
 }
