@@ -4,9 +4,6 @@ using System.Collections.Generic;
 
 public class CameraController : MonoBehaviour {
 
-	//[SerializeField] 
-	//public List<Transform> targets = new List<Transform>();
-
 	float boundingBoxPadding = 2f;
 
 	float minimumOrthographicSize = 20f;
@@ -23,13 +20,13 @@ public class CameraController : MonoBehaviour {
 
 	public void ZoomOut()
 	{
-		Rect boundingBox = CalculateTargetsBoundingBox(PlayerManager.Instance.treeTiles);
+		Rect boundingBox = CalculateTargetsBoundingBox(PlayerManager.Instance.gameController.treeTiles);
 		transform.position = CenterCameraPosition(boundingBox.center);
 		CalculateOrthographicSize(boundingBox);
 	}
 
 	public void ZoomFit(){
-		Rect boundingBox = CalculateTargetsBoundingBox(PlayerManager.Instance.seasonTiles);
+		Rect boundingBox = CalculateTargetsBoundingBox(PlayerManager.Instance.gameController.seasonTiles);
 		CalculateOrthographicSize(boundingBox);
 		Vector3 topRight = new Vector3(boundingBox.x + boundingBox.width, boundingBox.y, 0f);
 		Vector3 topLeft = new Vector3(boundingBox.x, boundingBox.y, 0f);

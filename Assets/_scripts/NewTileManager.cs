@@ -3,11 +3,12 @@ using System.Collections;
 
 public class NewTileManager : MonoBehaviour {
 
+    public GameController game;
 	public GameObject[] hexTiles;
 	public float spacing = 4.0f;
 	public float dragBoundary;
 
-	void Start(){
+	public void CreateTileSelection(){
 		dragBoundary = transform.position.x + spacing * 2.5f;
 		for (int i = 0; i < 5; i++) {
 			Vector3 position = transform.position + new Vector3 (spacing * i, 0.0f, 0.0f);
@@ -30,11 +31,11 @@ public class NewTileManager : MonoBehaviour {
 	}
 
 	void AddTile(Vector3 tilePosition){
-		if (PlayerManager.Instance.tileIndex.Count < 1)
-			PlayerManager.Instance.CreateTileIndex ();
-		int i = Random.Range (0, PlayerManager.Instance.tileIndex.Count);
-		int j = PlayerManager.Instance.tileIndex [i];
-		PlayerManager.Instance.tileIndex.RemoveAt(i);
+		if (game.tileIndex.Count < 1)
+			game.CreateTileIndex ();
+		int i = Random.Range (0, game.tileIndex.Count);
+		int j = game.tileIndex [i];
+		game.tileIndex.RemoveAt(i);
 		GameObject instance = Instantiate (hexTiles[j]);
 		instance.transform.SetParent (transform);
 		instance.tag = "InactiveBranch";

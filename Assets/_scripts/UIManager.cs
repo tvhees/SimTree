@@ -4,28 +4,17 @@ using System.Collections;
 
 public class UIManager : MonoBehaviour {
 
-	public Text waterText;
-	public Text energyText;
-	public Text generationText;
-	public Text sizeText;
-	public Text seasonText;
-	public Text environmentText;
-	public Text strengthText;
-    public ResourceMeter waterMeter, energyMeter;
+    public GameController game;
+    public ResourceMeter waterMeter, energyMeter, strengthMeter;
 
 	// Update is called once per frame
 	void Update () {
-		if (waterText != null) {
-			waterText.text = "Water: " + PlayerManager.Instance.water;
-			energyText.text = "Energy: " + PlayerManager.Instance.energy;
-			generationText.text = "Generation: " + PlayerManager.Instance.generation;
-			sizeText.text = "Size: " + PlayerManager.Instance.size;
-			seasonText.text = PlayerManager.Instance.season;
-			environmentText.text = PlayerManager.Instance.environment;
-			strengthText.text = "Strength: " + PlayerManager.Instance.strength;
-
-            waterMeter.UpdateMeter(PlayerManager.Instance.water);
-            energyMeter.UpdateMeter(PlayerManager.Instance.energy);
-		}
+            waterMeter.UpdateMeter(game.water);
+            energyMeter.UpdateMeter(game.energy);
+            strengthMeter.UpdateMeter(game.strength);
 	}
+
+    public void ShowMenu() {
+        PlayerManager.Instance.menuCamera.enabled = true;
+    }
 }

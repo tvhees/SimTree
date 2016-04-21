@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class RootController : MonoBehaviour {
 
+    public GameController game;
 	public GameObject root;
 	public GameObject[] trunkParts;
 	public GameObject ground;
@@ -14,6 +15,7 @@ public class RootController : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
+        game = PlayerManager.Instance.gameController;
 		transform.SetParent (GameObject.Find ("TreeStructure").transform);
 
 		hexOffset = Mathf.Sqrt(3) * 0.5f * PlayerManager.Instance.hexSize;
@@ -45,9 +47,9 @@ public class RootController : MonoBehaviour {
 			startingTiles[i].directionsDown = rootDirections;
 		}
 
-		PlayerManager.Instance.activeTiles.Add(startingTiles[0].gameObject);
-		PlayerManager.Instance.treeTiles.Add (startingTiles [1].gameObject);
-		PlayerManager.Instance.activeTiles.Add(startingTiles[2].gameObject);
+		game.activeTiles.Add(startingTiles[0].gameObject);
+		game.treeTiles.Add (startingTiles [1].gameObject);
+		game.activeTiles.Add(startingTiles[2].gameObject);
 
 		for (int i = 0; i < 3; i++) {
 			GameObject newRoot = Instantiate (root);
@@ -60,7 +62,7 @@ public class RootController : MonoBehaviour {
 				tileDirections = new bool[3]{ false, false, false };
 			}
 			Vector3 tilePosition = new Vector3 (0.0f, -2 * Mathf.Sqrt (3) * i, 0.0f);
-			PlayerManager.Instance.treeTiles.Add (newRoot);
+			game.treeTiles.Add (newRoot);
 
 			newRoot.GetComponent<TreeTile> ().UpdateTile (0, tilePosition, tileDirections, true, false, false);
 

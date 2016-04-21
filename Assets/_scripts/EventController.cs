@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 public class EventController : MonoBehaviour {
 
+    public GameController game;
 	public List<string> springEvents = new List<string> ();
 	public List<string> summerEvents = new List<string> ();
 	public List<string> autumnEvents = new List<string> ();
 	public List<string> winterEvents = new List<string> ();
 
 	private GameObject branch;
-	private GameObject tile;
 	private List<bool> eventTrigger = new List<bool>();
 
 	public void ResolveEvent(string eventName, GameObject currentTile, GameObject currentBranch){
@@ -50,46 +50,46 @@ public class EventController : MonoBehaviour {
 
 	void Flood(){
 		// Double the amount of water given
-		PlayerManager.Instance.water = Mathf.FloorToInt (PlayerManager.Instance.water * 3 / 2);
+		game.water = Mathf.FloorToInt (game.water * 3 / 2);
 	}
 
 	void Disease(){
 		// Weaken the tree
-		PlayerManager.Instance.strength -= 3;
+		game.strength -= 3;
 
-		if (PlayerManager.Instance.strength < 0)
-			PlayerManager.Instance.strength = 0;
+		if (game.strength < 0)
+			game.strength = 0;
 	}
 
 	void Wind(){
 		GetComponentInParent<WeatherController> ().Wind ();
 
 		// Destroy the tree if it is weak
-		if (PlayerManager.Instance.strength < 3)
-			PlayerManager.Instance.EndGame ();
+		if (game.strength <= 3)
+			game.EndGame ();
 		// Pollinate in spring
-		else if (PlayerManager.Instance.season == "Spring")
-			PlayerManager.Instance.seedStart = true;
+		else if (game.season == "Spring")
+			game.seedStart = true;
 	}
 
 	void Lightning(){
 		// Destroy the tree if it is weak
-		if (PlayerManager.Instance.strength < 3)
-			PlayerManager.Instance.EndGame ();
+		if (game.strength <= 3)
+			game.EndGame ();
 		// Create wildfire if the tree is dry
-		if (PlayerManager.Instance.water < 1)
+		if (game.water < 1)
 			Wildfire ();
 	}
 
 	void Insect(){
 		// Pollinate in spring, otherwise weaken the tree
-		if (PlayerManager.Instance.season == "Spring")
-			PlayerManager.Instance.seedStart = true;
+		if (game.season == "Spring")
+			game.seedStart = true;
 		else
-			PlayerManager.Instance.strength--;
+			game.strength--;
 
-		if (PlayerManager.Instance.strength < 0)
-			PlayerManager.Instance.strength = 0;
+		if (game.strength < 0)
+			game.strength = 0;
 	}
 
 	void Bird(){
@@ -105,7 +105,7 @@ public class EventController : MonoBehaviour {
 		string eventString = "None";
 
 		if (eventTrigger[index]){
-			switch (PlayerManager.Instance.nextSeason) {
+			switch (game.nextSeason) {
 			case "Spring":
 				eventString = Spring ();
 				break;

@@ -5,12 +5,14 @@ using System.Collections.Generic;
 public class SeasonController : MonoBehaviour {
 
 	public GameObject seasonTile;
+    public GameController game;
 
 	private Vector3 newPosition;
 	private float hexOffset;
 	private bool[] directions = new bool[3]{true, true, true};
 
 	void Awake(){
+        game = PlayerManager.Instance.gameController;
 		hexOffset = Mathf.Sqrt(3) * 0.5f * PlayerManager.Instance.hexSize;
 	}
 
@@ -59,10 +61,10 @@ public class SeasonController : MonoBehaviour {
 			newTile.transform.SetParent (transform);
 
 			if (tileType != 5) {
-				PlayerManager.Instance.WeatherSelector ();
-				int j = Random.Range (0, PlayerManager.Instance.weatherList.Count);
-				tileType = PlayerManager.Instance.weatherList [j];
-				PlayerManager.Instance.weatherList.RemoveAt (j);
+				game.WeatherSelector ();
+				int j = Random.Range (0, game.weatherList.Count);
+				tileType = game.weatherList [j];
+				game.weatherList.RemoveAt (j);
 			}
 
 			newTile.GetComponent<TreeTile> ().UpdateTile (tileType, newPosition, directions, false, true, true);

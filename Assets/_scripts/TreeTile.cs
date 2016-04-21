@@ -22,15 +22,17 @@ public class TreeTile : HexTile {
 	public GameObject branchGenerator;
 	public string eventType = "None";	
 	public bool destroyTag = false;
+    public GameController game;
 
 	private GameObject treeManager;
 	private Vector3[] tangentsUp = new Vector3[3];
 	private Vector3 m_pos;
-	private Vector3 screenPoint;
 	private Vector3 home;
 	private int activeMask;
 
 	void Awake(){
+        game = PlayerManager.Instance.gameController;
+        Debug.Log(game);
 		treeManager = GameObject.Find ("TreeStructure");
 		float size = PlayerManager.Instance.hexSize;
 		tangentsUp = new Vector3[]{ new Vector3 (-1 * size * Mathf.Sqrt(3)/4f, size * 0.25f, 0.0f), new Vector3(0.0f, size * 0.5f/Mathf.Sqrt(3), 0.0f), new Vector3(size * Mathf.Sqrt(3)/4f, size * 0.25f, 0.0f) };
@@ -63,7 +65,7 @@ public class TreeTile : HexTile {
 			if (hit != null) {
 				transform.position = hit.transform.position;
 				PlaceTile (hit.gameObject);
-				PlayerManager.Instance.CheckState ();
+				game.CheckState ();
 				draggable = false;
 			}
 			else
@@ -168,7 +170,7 @@ public class TreeTile : HexTile {
 	}
 
 	void ChangeSeason(){
-		season = PlayerManager.Instance.nextSeason;
+		season = game.nextSeason;
 	}
 
 	void PlaceTile(GameObject seasonTile){
@@ -178,10 +180,10 @@ public class TreeTile : HexTile {
 		// Attach selected tile to the tree, change its material and set it as active for next season
 		transform.SetParent (treeManager.transform);
 		ChangeMaterial (0);
-		PlayerManager.Instance.treeTiles.Add (gameObject);
+		game.treeTiles.Add (gameObject);
 
 		// Run any player effects from the season tile
-		PlayerManager.Instance.ResolveTile (seasonTile, gameObject);
+		game.ResolveTile (seasonTile, gameObject);
 
 		// This tile needs to know relative branch directions now
 		directionsDown = seasonTile.GetComponent<TreeTile> ().directionsDown;
@@ -203,15 +205,11 @@ public class TreeTile : HexTile {
 		}
 
 		// Destroy the season tile that was there
-		PlayerManager.Instance.activeTiles.Remove (seasonTile);
+		game.activeTiles.Remove (seasonTile);
 		Destroy(seasonTile);
 
 		// Place a new tile at the end of the tile manager
 		newTileScript.UpdateSelection(home);
-
-		PlayerManager.Instance.size++;
-
-
 	}
 
 	void PruneTree(){
@@ -238,13 +236,13 @@ public class TreeTile : HexTile {
 			if (hit) {
 				if (destroyTag && hit.tag != "InactiveBranch") {
 					// For fires etc we don't want to leave branches behind
-					PlayerManager.Instance.seasonTiles.Remove (hit.gameObject);
-					PlayerManager.Instance.activeTiles.Remove (hit.gameObject);
+					game.seasonTiles.Remove (hit.gameObject);
+					game.activeTiles.Remove (hit.gameObject);
 					Destroy (hit.gameObject);
 				} else if (!directionsUp [i] && hit.tag != "InactiveBranch") {
-					PlayerManager.Instance.seasonTiles.Remove (hit.gameObject);
-					PlayerManager.Instance.activeTiles.Remove (hit.gameObject);
-					PlayerManager.Instance.treeTiles.Add (hit.gameObject);
+					game.seasonTiles.Remove (hit.gameObject);
+					game.activeTiles.Remove (hit.gameObject);
+					game.treeTiles.Add (hit.gameObject);
 
 					hit.gameObject.layer = LayerMask.NameToLayer ("TreeTiles");
 					hit.GetComponent<TreeTile> ().ChangeMaterial (5);

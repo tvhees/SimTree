@@ -11,7 +11,6 @@ public class BezierGenerator : ProcBase	{
 	public float radius = 0.3f;
 
 	private Vector3[] R;
-	private Vector3[] curvePoints;
 	private Vector3 lastPoint;
 	private float posRadius;
 

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WeatherController : MonoBehaviour {
 
-	public GameObject windZone;
+    public GameController game;
 	public GameObject rainParticles;
 	public GameObject snowParticles;
 	public GameObject windParticles;
@@ -14,7 +14,7 @@ public class WeatherController : MonoBehaviour {
 
 	public void Rain(){
 
-		PlayerManager.Instance.water += 4;
+		game.water += 4;
 
 		ParticleSystem rainSys = rainParticles.GetComponent<ParticleSystem> ();
 		if (rainStop) {
@@ -44,22 +44,22 @@ public class WeatherController : MonoBehaviour {
 	}
 
 	public void Sunshine(){
-		if (PlayerManager.Instance.water > 0) {
+		if (game.water > 0) {
 			for (int i = 0; i < 2; i++) {
-				if (PlayerManager.Instance.water > 0) {
-					PlayerManager.Instance.water--;
-					PlayerManager.Instance.energy += 2;
+				if (game.water > 0) {
+					game.water--;
+					game.energy += 2;
 				} 
 			}
 		}
 		else
-			PlayerManager.Instance.energy--;
+			game.energy--;
 
 		// no weather system change enabled at the moment
 	}
 
 	public void Frost(){
-		PlayerManager.Instance.energy -= 1;
+		game.energy -= 1;
 
 		ParticleSystem snowSys = snowParticles.GetComponent<ParticleSystem> ();
 		if (snowStop) {

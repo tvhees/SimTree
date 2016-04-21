@@ -4,10 +4,13 @@ using System.Collections;
 
 public class InformationPanelController : MonoBehaviour {
 
-	public Camera mainCamera;
 	public Text seasonText;
 	public Text weatherText;
 	public Text weatherDescription;
+
+    void Start() {
+        PlayerManager.Instance.informationPanel = gameObject;
+    }
 
 	public void InfoPanelOn(Vector3 position, string season, string weather){
 		if (position.x > 0)
@@ -15,7 +18,7 @@ public class InformationPanelController : MonoBehaviour {
 		else
 			GetComponent<RectTransform> ().pivot = new Vector2 (0, 0);
 		
-		transform.position = mainCamera.WorldToScreenPoint(position);
+		transform.position = PlayerManager.Instance.mainCamera.WorldToScreenPoint(position);
 		seasonText.text = season;
 		weatherText.text = weather;
 
