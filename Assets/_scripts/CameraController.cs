@@ -18,22 +18,53 @@ public class CameraController : MonoBehaviour {
 		mainCamera.orthographicSize = 20;
 	}
 
-	public void ZoomOut()
-	{
-		Rect boundingBox = CalculateTargetsBoundingBox(PlayerManager.Instance.gameController.treeTiles);
-		transform.position = CenterCameraPosition(boundingBox.center);
-		CalculateOrthographicSize(boundingBox);
+    public IEnumerator ZoomOut()
+    {
+        Rect boundingBox = CalculateTargetsBoundingBox(PlayerManager.Instance.game.treeTiles);
+        float newSize = CalculateOrthographicSize(boundingBox), oldSize = mainCamera.orthographicSize;
+        Vector3 newPos = CenterCameraPosition(boundingBox.center), oldPos = transform.position;
+
+        yield return StartCoroutine(MoveCamera(oldPos, newPos, oldSize, newSize));
 	}
 
-	public void ZoomFit(){
-		Rect boundingBox = CalculateTargetsBoundingBox(PlayerManager.Instance.gameController.seasonTiles);
-		CalculateOrthographicSize(boundingBox);
-		Vector3 topRight = new Vector3(boundingBox.x + boundingBox.width, boundingBox.y, 0f);
+	public IEnumerator ZoomFit(float adjustment = 0f){
+		Rect boundingBox = CalculateTargetsBoundingBox(PlayerManager.Instance.game.seasonTiles);
+        float newSize = CalculateOrthographicSize(boundingBox), oldSize = mainCamera.orthographicSize;
+        Vector3 topRight = new Vector3(boundingBox.x + boundingBox.width, boundingBox.y, 0f);
 		Vector3 topLeft = new Vector3(boundingBox.x, boundingBox.y, 0f);
 
+        Vector3 newPos = transform.position, oldPos = transform.position;
+
 		if (mainCamera.WorldToViewportPoint(topRight).x > 1 || mainCamera.WorldToViewportPoint(topLeft).x < 0)
-			transform.position = new Vector3(CenterCameraPosition(boundingBox.center).x, transform.position.y, transform.position.z);
-	}
+			newPos = new Vector3(CenterCameraPosition(boundingBox.center).x, transform.position.y, transform.position.z);
+
+        // Adjusting camera to move tree 'downwards' relatively when desired.
+        newPos = newPos + new Vector3(0f, adjustment, 0f);
+
+        yield return StartCoroutine(MoveCamera(oldPos, newPos, oldSize, newSize));
+    }
+
+    IEnumerator MoveCamera(Vector3 oldPos, Vector3 newPos, float oldSize, float newSize) {
+        newSize = Mathf.Max(newSize, minimumOrthographicSize);
+        float sqrDistance = (transform.position - newPos).sqrMagnitude, linDistance = Mathf.Abs(newSize - mainCamera.orthographicSize);
+
+        int breakNo = 0;
+        float t = Time.time;
+        while (sqrDistance > Mathf.Epsilon || linDistance > 0.01f)
+        {
+            transform.position = Vector3.Lerp(oldPos, newPos, (Time.time - t) * zoomSpeed);
+            mainCamera.orthographicSize = Mathf.Lerp(oldSize, newSize, (Time.time - t) * zoomSpeed);
+            yield return null;
+            sqrDistance = (transform.position - newPos).sqrMagnitude;
+            linDistance = Mathf.Abs(newSize - mainCamera.orthographicSize);
+            breakNo++;
+            if (breakNo > 1000) {
+                Debug.Log("breaking loop");
+                yield break;
+            }
+        }
+        //Debug.Log("zoom success");
+    }
 
 	/// <summary>
 	/// Calculates a bounding box that contains all the targets.
@@ -73,7 +104,7 @@ public class CameraController : MonoBehaviour {
 	/// </summary>
 	/// <param name="boundingBox">A Rect bounding box containg all targets.</param>
 	/// <returns>A float for the orthographic size.</returns>
-	void CalculateOrthographicSize(Rect boundingBox)
+	float CalculateOrthographicSize(Rect boundingBox)
 	{
 		float orthographicSize = mainCamera.orthographicSize;
 		Vector3 topRight = new Vector3(boundingBox.x + boundingBox.width, boundingBox.y, 0f);
@@ -84,14 +115,6 @@ public class CameraController : MonoBehaviour {
 		else
 			orthographicSize = 1.2f*Mathf.Abs (boundingBox.height) / 2f;
 
-		int check = 0;
-		while (Mathf.Abs(mainCamera.orthographicSize - orthographicSize) > Mathf.Epsilon){
-			mainCamera.orthographicSize = Mathf.Clamp (Mathf.Lerp (mainCamera.orthographicSize, orthographicSize, Time.deltaTime * zoomSpeed), minimumOrthographicSize, Mathf.Infinity);
-			check++;
-			if (check > 1000){
-				break;	
-			}
-
-		}
+        return orthographicSize;
 	}
 }

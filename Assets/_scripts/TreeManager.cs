@@ -10,6 +10,10 @@ public class TreeManager : MonoBehaviour {
 	public GameObject highlightRing;
 	public float hexSize = 2;
 
+    void Awake() {
+        PlayerManager.Instance.treeManager = gameObject;
+    }
+
 	public void NewTree(){
 		Instantiate (treeRoot);
 	}
@@ -48,7 +52,7 @@ public class TreeManager : MonoBehaviour {
 		}
 
 		// Move the whole tree downwards, add new season tiles
-		transform.Translate (new Vector3 (0.0f, -Mathf.Sqrt(3) * hexSize, 0.0f));
+		//transform.Translate (new Vector3 (0.0f, -Mathf.Sqrt(3) * hexSize, 0.0f));
 		game.seasonTiles.Clear ();
 		game.ChangeSeason ();
 		GameObject instance = Instantiate (seasonHolder);

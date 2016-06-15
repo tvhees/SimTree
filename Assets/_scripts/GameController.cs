@@ -4,10 +4,11 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
-    public int water, energy, size, strength, seasonIndex, generation;
+    public int water, energy, size, strength, seasonIndex, generation, goalSize;
     public bool seedStart, seedGrowth;
     public string season, nextSeason;
     public TreeManager treeManager;
+    public RootController rootController;
     public WeatherController weatherController;
     public EnvironmentController environmentController;
     public EventController eventController;
@@ -20,11 +21,22 @@ public class GameController : MonoBehaviour {
     public List<int> weatherList = new List<int>(), tileIndex = new List<int>();
     public int[] masterIndex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
 
+    public enum State {
+        INTRO,
+        PLAY,
+        WIN,
+        LOSE
+    }
+
+    public State state;
+
     private string[] seasons = new string[4] { "Spring", "Summer", "Autumn", "Winter" };
     private List<GameObject> finishedTrees = new List<GameObject>();
 
     void Start() {
-        PlayerManager.Instance.gameController = this;
+        state = State.INTRO;
+        
+        PlayerManager.Instance.game = this;
 
         water = 4;
         energy = 4;
@@ -33,10 +45,10 @@ public class GameController : MonoBehaviour {
         seasonIndex = 0;
         generation = 1;
         season = "Spring";
+        goalSize = 5;
 
         PlayerManager.Instance.mainCamera.transform.position = new Vector3(0, 1, -10);
         PlayerManager.Instance.uiCamera = uiCamera;
-        uiCamera.enabled = false;
 
         treeManager.NewTree();
         seedStart = false;
@@ -121,7 +133,9 @@ public class GameController : MonoBehaviour {
 
     public void CheckState()
     {
-        if (seasonTiles.Count < 1)
+        if (state == State.INTRO)
+            rootController.StartingTiles();
+        else if (seasonTiles.Count < 1)
             EndGame();
         else if (energy < 1)
             EndGame();
@@ -130,7 +144,10 @@ public class GameController : MonoBehaviour {
         else if (activeTiles.Count < 1)
         {
             treeManager.ChangeSeason();
-            PlayerManager.Instance.mainCamera.GetComponent<CameraController>().ZoomFit();
+            if (size >= goalSize)
+                EndGame(State.WIN);
+            else
+                StartCoroutine(PlayerManager.Instance.mainCamera.GetComponent<CameraController>().ZoomFit(2*Mathf.Sqrt(3)));
         }
     }
 
@@ -154,11 +171,11 @@ public class GameController : MonoBehaviour {
             NewTree();
     }
 
-    public void EndGame()
+    public void EndGame(State result = State.LOSE)
     {
-
+        state = result;
         uiCamera.gameObject.SetActive(false);
-        PlayerManager.Instance.mainCamera.GetComponent<CameraController>().ZoomOut();
+        StartCoroutine(PlayerManager.Instance.mainCamera.GetComponent<CameraController>().ZoomOut());
         foreach (GameObject tile in activeTiles)
             Destroy(tile);
         foreach (GameObject tile in seasonTiles)

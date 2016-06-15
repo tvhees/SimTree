@@ -8,9 +8,4 @@ public class Menu : MonoBehaviour {
     void Awake() {
         PlayerManager.Instance.menuCamera = menuCamera;
     }
-
-    public void Play() {
-        PlayerManager.Instance.uiCamera.enabled = true;
-        menuCamera.enabled = false;
-    }
 }

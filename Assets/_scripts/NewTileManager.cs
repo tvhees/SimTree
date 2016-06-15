@@ -17,8 +17,8 @@ public class NewTileManager : MonoBehaviour {
 	}
 
 	public void UpdateSelection(Vector3 emptyPosition){
-		HexTile[] hexTiles = transform.GetComponentsInChildren<HexTile> ();
-		foreach (HexTile tile in hexTiles) {
+		TreeTile[] hexTiles = transform.GetComponentsInChildren<TreeTile> ();
+		foreach (TreeTile tile in hexTiles) {
 			if (tile.transform.position.x > emptyPosition.x) {
 				tile.transform.Translate (new Vector3 (-spacing, 0.0f, 0.0f), Space.World);
 				if (tile.transform.position.x < dragBoundary)
@@ -27,7 +27,6 @@ public class NewTileManager : MonoBehaviour {
 		}
 
 		AddTile (transform.position + new Vector3 (spacing * 4.0f, 0.0f, 0.0f));
-
 	}
 
 	void AddTile(Vector3 tilePosition){

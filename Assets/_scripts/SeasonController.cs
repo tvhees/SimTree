@@ -12,7 +12,7 @@ public class SeasonController : MonoBehaviour {
 	private bool[] directions = new bool[3]{true, true, true};
 
 	void Awake(){
-        game = PlayerManager.Instance.gameController;
+        game = PlayerManager.Instance.game;
 		hexOffset = Mathf.Sqrt(3) * 0.5f * PlayerManager.Instance.hexSize;
 	}
 
