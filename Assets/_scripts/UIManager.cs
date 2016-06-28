@@ -7,12 +7,16 @@ public class UIManager : MonoBehaviour {
     public GameController game;
     public Camera uiCamera;
     public ResourceMeter waterMeter, energyMeter, strengthMeter;
+    public GameObject optionsPanel;
 
 	// Update is called once per frame
 	void Update () {
         switch (game.state)
         {
             case GameController.State.INTRO:
+                waterMeter.UpdateMeter(game.water);
+                energyMeter.UpdateMeter(game.energy);
+                strengthMeter.UpdateMeter(game.strength);
                 ShowCameras(true, false, false);
                 break;
             case GameController.State.PLAY:
@@ -36,5 +40,10 @@ public class UIManager : MonoBehaviour {
             uiCamera.enabled = ui;
         if (PlayerManager.Instance.endCamera != null)
             PlayerManager.Instance.endCamera.enabled = end;
+    }
+
+    public void ToggleOptions()
+    {
+        optionsPanel.SetActive(!optionsPanel.activeSelf);
     }
 }

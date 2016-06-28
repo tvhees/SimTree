@@ -49,7 +49,7 @@ public class EventController : MonoBehaviour {
 	}
 
 	void Flood(){
-		// Double the amount of water given
+		// +50% total water
 		game.water = Mathf.FloorToInt (game.water * 3 / 2);
 	}
 

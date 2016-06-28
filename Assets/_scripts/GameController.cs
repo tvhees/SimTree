@@ -4,9 +4,12 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
+    // Game data variables
     public int water, energy, size, strength, seasonIndex, generation, goalSize;
     public bool seedStart, seedGrowth;
     public string season, nextSeason;
+
+    // Script and object references
     public TreeManager treeManager;
     public RootController rootController;
     public WeatherController weatherController;
@@ -15,12 +18,17 @@ public class GameController : MonoBehaviour {
     public NewTileManager newTileManager;
     public Camera uiCamera;
     public GameObject informationPanel;
+
+    // Tracking lists
     public List<GameObject> activeTiles = new List<GameObject>(),
         seasonTiles = new List<GameObject>(),
         treeTiles = new List<GameObject>();
     public List<int> weatherList = new List<int>(), tileIndex = new List<int>();
     public int[] masterIndex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+    private string[] seasons = new string[4] { "Spring", "Summer", "Autumn", "Winter" };
+    private List<GameObject> finishedTrees = new List<GameObject>();
 
+    // Game state variable
     public enum State {
         INTRO,
         PLAY,
@@ -29,9 +37,6 @@ public class GameController : MonoBehaviour {
     }
 
     public State state;
-
-    private string[] seasons = new string[4] { "Spring", "Summer", "Autumn", "Winter" };
-    private List<GameObject> finishedTrees = new List<GameObject>();
 
     void Start() {
         state = State.INTRO;
@@ -45,7 +50,7 @@ public class GameController : MonoBehaviour {
         seasonIndex = 0;
         generation = 1;
         season = "Spring";
-        goalSize = 5;
+        goalSize = PlayerManager.Instance.goalSize;
 
         PlayerManager.Instance.mainCamera.transform.position = new Vector3(0, 1, -10);
         PlayerManager.Instance.uiCamera = uiCamera;
@@ -174,6 +179,16 @@ public class GameController : MonoBehaviour {
     public void EndGame(State result = State.LOSE)
     {
         state = result;
+
+        if (result == State.WIN)
+        {
+            PlayerManager.Instance.goalSize++;
+        }
+        else
+        {
+            PlayerManager.Instance.goalSize = Mathf.Max(PlayerManager.Instance.goalSize - 1, 3);
+        }
+
         uiCamera.gameObject.SetActive(false);
         StartCoroutine(PlayerManager.Instance.mainCamera.GetComponent<CameraController>().ZoomOut());
         foreach (GameObject tile in activeTiles)
@@ -223,4 +238,8 @@ public class GameController : MonoBehaviour {
         weatherList.Clear();
     }
 
+    public void ResetGoal()
+    {
+        goalSize = PlayerManager.Instance.goalSize = 5;
+    }
 }

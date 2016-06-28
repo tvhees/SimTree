@@ -15,8 +15,8 @@ public class EndGame : MonoBehaviour {
     void Update()
     {
         if (PlayerManager.Instance.game.state == GameController.State.WIN)
-            winLoseText.text = "your tree survived!";
+            winLoseText.text = "Target height of " + PlayerManager.Instance.game.goalSize.ToString() + " m reached. Your tree survived!";
         else
-            winLoseText.text = "your tree did not survive";
+            winLoseText.text = "Target height of " + PlayerManager.Instance.game.goalSize.ToString() + " m not reached. Your tree did not survive";
     }
 }

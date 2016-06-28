@@ -28,7 +28,7 @@ public class TreeTile : MonoBehaviour {
 
 	void OnMouseDown(){
 		if (weather != "Inactive")
-			PlayerManager.Instance.informationPanel.GetComponent<InformationPanelController> ().InfoPanelOn (transform.position, season, weather);
+			PlayerManager.Instance.informationPanel.GetComponent<InformationPanelController> ().InfoPanelOn (transform.position, season, weather, eventType);
 		else if (draggable) {
 			home = transform.position;
 		}

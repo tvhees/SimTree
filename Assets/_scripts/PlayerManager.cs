@@ -7,6 +7,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 
 	// Declare variables to track across the game
 	public float hexSize = 2.0f;
+    public int goalSize = 5;
 	public GameObject informationPanel, treeManager;
 	public Camera mainCamera, menuCamera, uiCamera, endCamera;
 	public string environment = "No environment";

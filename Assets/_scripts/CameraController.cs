@@ -63,7 +63,7 @@ public class CameraController : MonoBehaviour {
                 yield break;
             }
         }
-        //Debug.Log("zoom success");
+        Debug.Log("zoom success");
     }
 
 	/// <summary>
