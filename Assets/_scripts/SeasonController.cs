@@ -7,8 +7,6 @@ public class SeasonController : MonoBehaviour
 {
 
     public GameObject seasonTile;
-
-    private Vector3 newPosition;
     private float hexOffset;
     private bool[] directions = new bool[3] { true, true, true };
 
@@ -46,16 +44,16 @@ public class SeasonController : MonoBehaviour
             .ForEach(direction =>
             {
                 newTiles.Add(
-                    NewTile(direction.i, direction.position, direction.type)
+                    CreateNewTile(direction.i, direction.position, direction.type)
                 );
             });
 
         return newTiles.Where(tile => tile).ToList();
     }
 
-    public GameObject NewTile(int i, Vector3 oldPosition, TileType tileType)
+    public GameObject CreateNewTile(int i, Vector3 oldPosition, TileType tileType)
     {
-        newPosition = oldPosition;
+        Vector3 newPosition = oldPosition;
         switch (i)
         {
             case 0:
@@ -81,13 +79,11 @@ public class SeasonController : MonoBehaviour
 
         if (tileType != TileType.Leaves)
         {
-            PlayerManager.Instance.WeatherSelector();
-            int j = Random.Range(0, PlayerManager.Instance.weatherList.Count);
-            tileType = (TileType)PlayerManager.Instance.weatherList[j];
-            PlayerManager.Instance.weatherList.RemoveAt(j);
+            tileType = PlayerManager.Instance.GetRandomTileType();
         }
 
         newTile.GetComponent<TreeTile>().UpdateTile(tileType, newPosition, directions, false, true, true);
+
         return newTile;
     }
 }

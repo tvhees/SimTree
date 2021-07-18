@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
@@ -134,9 +135,9 @@ public class PlayerManager : Singleton<PlayerManager>
             seedGrowth = true;
     }
 
-    public void WeatherSelector()
+    public TileType GetRandomTileType()
     {
-        if (weatherList.Count == 0)
+        if (!weatherList.Any())
         {
             switch (nextSeason)
             {
@@ -154,6 +155,12 @@ public class PlayerManager : Singleton<PlayerManager>
                     break;
             }
         }
+
+        int index = Random.Range(0, weatherList.Count);
+        TileType type = (TileType)weatherList[index];
+        weatherList.RemoveAt(index);
+
+        return type;
     }
 
     public void CheckState()
