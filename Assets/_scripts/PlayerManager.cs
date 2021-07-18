@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityExtensions;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
@@ -148,8 +149,7 @@ public class PlayerManager : Singleton<PlayerManager>
             }
         }
 
-        int index = Random.Range(0, weatherList.Count);
-        TileType type = (TileType)weatherList[index];
+        var (type, index) = weatherList.Random();
         weatherList.RemoveAt(index);
 
         return type;

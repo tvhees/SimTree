@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityExtensions;
+using System.Linq;
 
 public class EventController : MonoBehaviour
 {
@@ -110,75 +112,69 @@ public class EventController : MonoBehaviour
         if (eventTrigger.Count < 1)
             eventTrigger.AddRange(new bool[3] { false, false, true });
 
-        int index = Random.Range(0, eventTrigger.Count);
-
-        string eventString = "None";
-
-        if (eventTrigger[index])
-        {
-            switch (PlayerManager.Instance.nextSeason)
-            {
-                case "Spring":
-                    eventString = Spring();
-                    break;
-                case "Summer":
-                    eventString = Summer();
-                    break;
-                case "Autumn":
-                    eventString = Autumn();
-                    break;
-                case "Winter":
-                    eventString = Winter();
-                    break;
-            }
-        }
-
+        var (trigger, index) = eventTrigger.Random();
         eventTrigger.RemoveAt(index);
 
-        return eventString;
+        if (!trigger)
+        {
+            return "None";
+        }
+
+        switch (PlayerManager.Instance.nextSeason)
+        {
+            case "Spring":
+                return Spring();
+            case "Summer":
+                return Summer();
+            case "Autumn":
+                return Autumn();
+            case "Winter":
+                return Winter();
+        }
+
+        throw new System.Exception("Could not get appropriate event name for season " + PlayerManager.Instance.nextSeason);
     }
 
+    private string PopEvent(ref List<string> events)
+    {
+        var (sEvent, index) = events.Random();
+        events.RemoveAt(index);
+
+        return sEvent;
+    }
+
+    // TODO: Store event string arrays in data
     private string Spring()
     {
-        if (springEvents.Count < 1)
+        if (!springEvents.Any())
+        {
             springEvents.AddRange(new string[] { "Wind", "Lightning", "Flood", "Insect", "Insect", "Insect", "Insect", "Disease" });
+        }
 
-        int index = Random.Range(0, springEvents.Count);
-        string returnEvent = springEvents[index];
-        springEvents.RemoveAt(index);
-        return returnEvent;
+        return PopEvent(ref springEvents);
     }
 
     private string Summer()
     {
-        if (summerEvents.Count < 1)
+        if (!summerEvents.Any())
             summerEvents.AddRange(new string[] { "Lightning", "Wildfire", "Wildfire", "Wildfire", "Wind", "Wind", "Insect", "Insect" });
 
-        int index = Random.Range(0, summerEvents.Count);
-        string returnEvent = summerEvents[index];
-        summerEvents.RemoveAt(index);
-        return returnEvent;
+        return PopEvent(ref summerEvents);
     }
 
     private string Autumn()
     {
-        if (autumnEvents.Count < 1)
+        if (!autumnEvents.Any())
             autumnEvents.AddRange(new string[] { "Lightning", "Lightning", "Wind", "Wind", "Flood", "Flood", "Disease", "Insect" });
 
-        int index = Random.Range(0, autumnEvents.Count);
-        string returnEvent = autumnEvents[index];
-        autumnEvents.RemoveAt(index);
-        return returnEvent;
+        return PopEvent(ref autumnEvents);
     }
 
     private string Winter()
     {
-        if (winterEvents.Count < 1)
+        if (!winterEvents.Any())
             winterEvents.AddRange(new string[] { "Lightning", "Wind", "Wind", "Flood", "Flood", "Flood", "Disease", "Disease" });
 
-        int index = Random.Range(0, winterEvents.Count);
-        string returnEvent = winterEvents[index];
-        winterEvents.RemoveAt(index);
-        return returnEvent;
+        return PopEvent(ref winterEvents);
     }
 }

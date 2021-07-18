@@ -16,8 +16,7 @@ public class NewTileManager : MonoBehaviour
 
     private float dragBoundary { get { return transform.position.x + spacing * (draggableTiles + 0.5f); } }
     private List<int> spawnableTileIndices = new List<int>();
-    private int undraggableTiles { get { return tilesToDisplay - draggableTiles; } }
-    private Vector3 newTilePosition { get { return transform.position + (tilesToDisplay - 1) * spacing * Vector3.right; } }
+    private Vector3 newTilePosition { get { return transform.position + (tilesToDisplay - 0.5f) * spacing * Vector3.right; } }
 
     void Start()
     {
@@ -34,7 +33,7 @@ public class NewTileManager : MonoBehaviour
         };
         unavailableTilesMarker.transform.localScale = new Vector3
         {
-            x = undraggableTiles * spacing,
+            x = (tilesToDisplay - draggableTiles) * spacing,
             y = spacing,
             z = 1
         };
