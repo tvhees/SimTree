@@ -5336,7 +5336,7 @@ MeshRenderer:
   m_GameObject: {fileID: 494606166}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
@@ -10789,7 +10789,9 @@ MonoBehaviour:
   - {fileID: 116804, guid: dd4ac53c4bd404aa385f23e7bc968ec4, type: 3}
   - {fileID: 186068, guid: b6dc6a846c4bf429899ea9b0808b1d39, type: 3}
   spacing: 4
-  dragBoundary: 0
+  tilesToDisplay: 5
+  draggableTiles: 3
+  unavailableTilesMarker: {fileID: 494606166}
 --- !u!1 &886303676
 GameObject:
   m_ObjectHideFlags: 0

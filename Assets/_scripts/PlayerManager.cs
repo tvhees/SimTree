@@ -17,8 +17,6 @@ public class PlayerManager : Singleton<PlayerManager>
     public List<GameObject> activeTiles = new List<GameObject>();
     public List<GameObject> seasonTiles = new List<GameObject>();
     public List<GameObject> treeTiles = new List<GameObject>();
-    public int[] masterIndex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
-    public List<int> tileIndex = new List<int>();
     public float hexSize = 2.0f;
     public List<TileType> weatherList = new List<TileType>();
     public int seasonIndex = 0;
@@ -70,12 +68,6 @@ public class PlayerManager : Singleton<PlayerManager>
         {
             Reproduce();
         }
-    }
-
-    public void CreateTileIndex()
-    {
-        tileIndex.Clear();
-        tileIndex.AddRange(masterIndex);
     }
 
     public void ResolveTile(GameObject tile, GameObject branch)

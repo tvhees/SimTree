@@ -79,9 +79,9 @@ public class TreeTile : HexTile
         }
     }
 
-    public void UpdateTile(TileType newType, Vector3 newPos, bool[] newDirections, bool changeSprite, bool changeSeason, bool changeEvent)
+    // TODO: This code smells, especially when used to initialise new tiles. See if there's a better way to handle this. 
+    public void UpdateTile(TileType newType, Vector3 newPos, bool[] newDirections = null, bool changeSprite = false, bool changeSeason = false, bool changeEvent = false)
     {
-        Debug.Log(newType);
         ChangeMaterial(newType);
 
         ChangePosition(newPos);
@@ -101,7 +101,6 @@ public class TreeTile : HexTile
 
     public void ChangeMaterial(TileType newType)
     {
-        Debug.Log("Change material " + newType);
         type = newType;
         GetComponent<MeshRenderer>().material = materials[(int)newType];
         switch (newType)
