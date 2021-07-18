@@ -81,6 +81,7 @@ public class TreeTile : HexTile
 
     public void UpdateTile(TileType newType, Vector3 newPos, bool[] newDirections, bool changeSprite, bool changeSeason, bool changeEvent)
     {
+        Debug.Log(newType);
         ChangeMaterial(newType);
 
         ChangePosition(newPos);
@@ -100,12 +101,12 @@ public class TreeTile : HexTile
 
     public void ChangeMaterial(TileType newType)
     {
+        Debug.Log("Change material " + newType);
         type = newType;
         GetComponent<MeshRenderer>().material = materials[(int)newType];
         switch (newType)
         {
             case TileType.NewTile:
-            case TileType.CurrentSeason:
             case TileType.Leaves:
                 weather = "Inactive";
                 break;

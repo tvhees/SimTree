@@ -42,6 +42,7 @@
      <Compile Include="Assets\_scripts\HexTile.cs" />
      <Compile Include="Assets\_scripts\Common\ProcBase.cs" />
      <Compile Include="Assets\_scripts\TreeManager.cs" />
+     <Compile Include="Assets\_scripts\Data\TileType.cs" />
      <Compile Include="Assets\_scripts\InformationPanelController.cs" />
      <Compile Include="Assets\_scripts\PlayerManager.cs" />
      <Compile Include="Assets\_scripts\BezierTester.cs" />
@@ -60,7 +61,6 @@
      <Compile Include="Assets\_scripts\RootController.cs" />
      <Compile Include="Assets\_scripts\BackLightController.cs" />
      <Compile Include="Assets\_scripts\SeasonController.cs" />
-     <Compile Include="Assets\_scripts\Data\TileType.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:/Program Files/Unity/Hub/Editor/2021.1.12f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>

@@ -27,7 +27,7 @@ public class SeasonController : MonoBehaviour
     /// <param name="tileListIn"></param>
     /// <param name="tileListOut"></param>
     /// <param name="tileType"></param>
-    public List<GameObject> AddTiles(List<GameObject> tileListIn, TileType tileType)
+    public List<GameObject> AddTiles(List<GameObject> tileListIn)
     {
         var newTiles = new List<GameObject>();
 
@@ -36,7 +36,7 @@ public class SeasonController : MonoBehaviour
                 .Select((connected, i) =>
                 new
                 {
-                    type = connected ? tileType : TileType.Leaves,
+                    type = connected ? TileType.NewTile : TileType.Leaves,
                     tile.transform.position,
                     i
                 })
@@ -51,6 +51,13 @@ public class SeasonController : MonoBehaviour
         return newTiles.Where(tile => tile).ToList();
     }
 
+    /// <summary>
+    /// Creates a new tile in a direction <c>[up-left, up, up-right]</c> indexed by <paramref name="i" /> from <paramref name="oldPosition" /> with a random <c>TileType</c> unless <paramref name="tileType" /> is <c>TileType.Leaves</c><para>Uses a raycast to figure out if a tile already exists there and returns <c>null</c> instead if so.</para>
+    /// </summary>
+    /// <param name="i"></param>
+    /// <param name="oldPosition"></param>
+    /// <param name="tileType"></param>
+    /// <returns>GameObject</returns>
     public GameObject CreateNewTile(int i, Vector3 oldPosition, TileType tileType)
     {
         Vector3 newPosition = oldPosition;

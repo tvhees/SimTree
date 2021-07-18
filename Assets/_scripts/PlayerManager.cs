@@ -20,7 +20,7 @@ public class PlayerManager : Singleton<PlayerManager>
     public int[] masterIndex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
     public List<int> tileIndex = new List<int>();
     public float hexSize = 2.0f;
-    public List<int> weatherList = new List<int>();
+    public List<TileType> weatherList = new List<TileType>();
     public int seasonIndex = 0;
     public GameObject seasonHolder;
     public GameObject seasonText;
@@ -142,16 +142,16 @@ public class PlayerManager : Singleton<PlayerManager>
             switch (nextSeason)
             {
                 case "Spring":
-                    weatherList.AddRange(new int[4] { 4, 4, 3, 2 });
+                    weatherList.AddRange(new TileType[4] { TileType.Sunshine, TileType.Sunshine, TileType.Rain, TileType.Fair });
                     break;
                 case "Summer":
-                    weatherList.AddRange(new int[4] { 4, 4, 2, 2 });
+                    weatherList.AddRange(new TileType[4] { TileType.Sunshine, TileType.Sunshine, TileType.Fair, TileType.Fair });
                     break;
                 case "Autumn":
-                    weatherList.AddRange(new int[4] { 4, 3, 2, 2 });
+                    weatherList.AddRange(new TileType[4] { TileType.Sunshine, TileType.Rain, TileType.Fair, TileType.Fair });
                     break;
                 case "Winter":
-                    weatherList.AddRange(new int[4] { 3, 3, 2, 6 });
+                    weatherList.AddRange(new TileType[4] { TileType.Rain, TileType.Rain, TileType.Fair, TileType.Frost });
                     break;
             }
         }
