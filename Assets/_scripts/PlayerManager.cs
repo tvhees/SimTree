@@ -89,25 +89,21 @@ public class PlayerManager : Singleton<PlayerManager>
             energy--;
 
         // Tiles may have a weather type which further modifies resources or graphics
-        int tileWeather = tile.GetComponent<TreeTile>().type;
+        TileType tileWeather = tile.GetComponent<TreeTile>().type;
 
         switch (tileWeather)
         {
             // No special effect for new tiles, neutral tiles, or leaf tiles
-            case 0:
-            case 1:
-            case 5:
-                break;
-            case 2:
+            case TileType.Fair:
                 weatherController.Fair();
                 break;
-            case 3:
+            case TileType.Rain:
                 weatherController.Rain();
                 break;
-            case 4:
+            case TileType.Sunshine:
                 weatherController.Sunshine();
                 break;
-            case 6:
+            case TileType.Frost:
                 weatherController.Frost();
                 break;
         }

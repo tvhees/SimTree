@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class SeasonController : MonoBehaviour
 {
@@ -28,31 +29,31 @@ public class SeasonController : MonoBehaviour
     /// <param name="tileListIn"></param>
     /// <param name="tileListOut"></param>
     /// <param name="tileType"></param>
-    /// TODO: Return new list instead of mutating tileListOut, make tileType an enum
-    public List<GameObject> AddTiles(List<GameObject> tileListIn, int tileType)
+    public List<GameObject> AddTiles(List<GameObject> tileListIn, TileType tileType)
     {
         var newTiles = new List<GameObject>();
 
-        tileListIn.ForEach(tile =>
-        {
-            TreeTile tileScript = tile.GetComponent<TreeTile>();
-            for (int i = 0; i < 3; i++)
+        tileListIn.Select(tile => tile.GetComponent<TreeTile>())
+            .SelectMany(tile => tile.directionsUp
+                .Select((connected, i) =>
+                new
+                {
+                    type = connected ? tileType : TileType.Leaves,
+                    tile.transform.position,
+                    i
+                })
+            ).ToList()
+            .ForEach(direction =>
             {
-                GameObject newTile;
-                if (tileScript.directionsUp[i])
-                    newTile = NewTile(i, tile.transform.position, tileType);
-                else
-                    newTile = NewTile(i, tile.transform.position, 5);
+                newTiles.Add(
+                    NewTile(direction.i, direction.position, direction.type)
+                );
+            });
 
-                if (newTile)
-                    newTiles.Add(newTile);
-            }
-        });
-
-        return newTiles;
+        return newTiles.Where(tile => tile).ToList();
     }
 
-    public GameObject NewTile(int i, Vector3 oldPosition, int tileType)
+    public GameObject NewTile(int i, Vector3 oldPosition, TileType tileType)
     {
         newPosition = oldPosition;
         switch (i)
@@ -78,11 +79,11 @@ public class SeasonController : MonoBehaviour
         GameObject newTile = Instantiate(seasonTile);
         newTile.transform.SetParent(transform);
 
-        if (tileType != 5)
+        if (tileType != TileType.Leaves)
         {
             PlayerManager.Instance.WeatherSelector();
             int j = Random.Range(0, PlayerManager.Instance.weatherList.Count);
-            tileType = PlayerManager.Instance.weatherList[j];
+            tileType = (TileType)PlayerManager.Instance.weatherList[j];
             PlayerManager.Instance.weatherList.RemoveAt(j);
         }
 
