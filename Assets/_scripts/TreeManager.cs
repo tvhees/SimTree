@@ -68,6 +68,6 @@ public class TreeManager : MonoBehaviour
         PlayerManager.Instance.ChangeSeason();
         GameObject instance = Instantiate(seasonHolder);
         instance.name = "CurrentSeason";
-        instance.GetComponent<SeasonController>().AddTiles(PlayerManager.Instance.activeTiles, PlayerManager.Instance.seasonTiles, 2);
+        PlayerManager.Instance.seasonTiles = instance.GetComponent<SeasonController>().AddTiles(PlayerManager.Instance.activeTiles, 2);
     }
 }
