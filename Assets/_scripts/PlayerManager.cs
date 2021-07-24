@@ -55,7 +55,9 @@ public class PlayerManager : Singleton<PlayerManager>
         environmentController = gameManager.GetComponent<EnvironmentController>();
         eventController = gameManager.GetComponent<EventController>();
 
-        StartGame();
+        ICommand startGame = new Command("StartGame", () => StartGame());
+
+        CommandManager.Instance.QueueCommand(startGame);
     }
 
     void Update()

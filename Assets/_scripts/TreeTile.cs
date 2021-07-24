@@ -241,21 +241,24 @@ public class TreeTile : HexTile
         Vector3 prunePosition = transform.position;
         Vector3 adjustPosition = transform.position;
         float hexOffset = Mathf.Sqrt(3) * 0.5f * PlayerManager.Instance.hexSize;
+        Vector3 hexUp = hexOffset * Vector3.up;
+        Vector3 hexRight = Mathf.Sqrt(3) * hexOffset * Vector3.right;
+
         for (int i = 0; i < 3; i++)
         {
             switch (i)
             {
                 case 0:
-                    prunePosition = transform.position + new Vector3(-Mathf.Sqrt(3) * hexOffset, hexOffset, 0.0f);
-                    adjustPosition = transform.position + new Vector3(-Mathf.Sqrt(3) * hexOffset, -hexOffset, 0.0f);
+                    prunePosition = transform.position - hexRight + hexUp;
+                    adjustPosition = transform.position - hexRight - hexUp;
                     break;
                 case 1:
-                    prunePosition = transform.position + new Vector3(0, hexOffset * 2, 0.0f);
-                    adjustPosition = transform.position + new Vector3(0, -hexOffset * 2, 0.0f);
+                    prunePosition = transform.position + 2 * hexUp;
+                    adjustPosition = transform.position - 2 * hexUp;
                     break;
                 case 2:
-                    prunePosition = transform.position + new Vector3(Mathf.Sqrt(3) * hexOffset, hexOffset, 0.0f);
-                    adjustPosition = transform.position + new Vector3(Mathf.Sqrt(3) * hexOffset, -hexOffset, 0.0f);
+                    prunePosition = transform.position + hexRight + hexUp;
+                    adjustPosition = transform.position + hexRight - hexUp;
                     break;
             }
 
@@ -271,6 +274,7 @@ public class TreeTile : HexTile
                 }
                 else if (!directionsUp[i] && hit.tag != "InactiveBranch")
                 {
+                    // Next season tile is no longer connected - turn it in to a leaf tile
                     PlayerManager.Instance.seasonTiles.Remove(hit.gameObject);
                     PlayerManager.Instance.activeTiles.Remove(hit.gameObject);
                     PlayerManager.Instance.treeTiles.Add(hit.gameObject);
@@ -283,6 +287,7 @@ public class TreeTile : HexTile
                 }
                 else
                 {
+                    // Next season tile is connected to this one - give it the correct connection variables
                     hit.GetComponent<TreeTile>().directionsDown[2 - i] = true;
                     hit.GetComponent<TreeTile>().tangentsDown[2 - i] = tangentsUp[i];
                 }
@@ -291,6 +296,7 @@ public class TreeTile : HexTile
             hit = Physics2D.OverlapPoint(adjustPosition);
             if (hit && directionsDown[i])
             {
+                // Previous season tile is connected to this - build branch connections
                 if (hit.transform.childCount > 0)
                 {
                     BezierGenerator[] branches = hit.GetComponentsInChildren<BezierGenerator>();

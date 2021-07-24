@@ -136,7 +136,6 @@ public class BranchGenerator : ProcBase
 
         MeshFilter filter = GetComponent<MeshFilter>();
         Mesh mesh = filter.mesh;
-        Debug.Log(mesh);
         mesh = meshBuilder.CreateMesh(mesh);
 
         //If the MeshFilter exists, attach the new mesh to it.

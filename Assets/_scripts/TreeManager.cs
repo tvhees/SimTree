@@ -24,6 +24,7 @@ public class TreeManager : MonoBehaviour
 
     void AddToTreeParentAndLayer(GameObject branch)
     {
+        // TODO: MissingReferenceException thrown here
         branch.transform.SetParent(transform);
         branch.layer = LayerMask.NameToLayer("TreeTiles");
     }
